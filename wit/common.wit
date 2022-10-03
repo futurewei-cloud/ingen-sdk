@@ -1,0 +1,5 @@
+// Common error type implementation:
+// https://github.com/danbugs/wit-error-rs
+variant error {
+    error-with-description(string)
+}

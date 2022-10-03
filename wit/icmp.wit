@@ -1,0 +1,25 @@
+use * from common
+
+record icmp-ping-result {
+    src-ip: string,
+    dst-ip: string,
+    icmp-code: u8,
+    identifier: u16,
+    seq: u16,
+    ttl: u8,
+    packet-size: u64,
+	duration-in-microseconds: u64,
+}
+
+resource icmp {
+    // ping target, no DNS
+    static ping: func(target-ip: string) -> expected<icmp-ping-result, error>
+
+    static ping-with-options: func(
+		target-ip: string,
+	    source-ip: string,
+		identifier: u16,
+		ttl: u8,
+		seq: u16,
+	) -> expected<icmp-ping-result, error>
+}

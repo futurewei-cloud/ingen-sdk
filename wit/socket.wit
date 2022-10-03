@@ -1,0 +1,8 @@
+use { error } from common
+
+type raw-fd = s32
+
+resource socket {
+    static tcp-bind: func(endpoint: string) -> expected<raw-fd, error>
+    static tcp-connect: func(remote-endpoint: string, local-endpoint: string, connect-timeout-in-ms: u32) -> expected<raw-fd, error>
+}
