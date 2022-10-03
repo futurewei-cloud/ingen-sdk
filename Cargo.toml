@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "wasm_sdk",
+    "examples/mio_tcp_server"
 ]
 
 [profile.dev]
