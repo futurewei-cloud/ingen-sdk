@@ -315,7 +315,44 @@ pub mod socket {
         }
     }
     impl Socket {
-        pub fn tcp_connect(
+        pub fn tcp_connect(remote_endpoint: &str) -> Result<RawFd, Error> {
+            unsafe {
+                let vec0 = remote_endpoint;
+                let ptr0 = vec0.as_ptr() as i32;
+                let len0 = vec0.len() as i32;
+                let ptr1 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
+                #[link(wasm_import_module = "socket")]
+                extern "C" {
+                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::tcp-connect")]
+                    #[cfg_attr(
+                        not(target_arch = "wasm32"),
+                        link_name = "socket_socket::tcp-connect"
+                    )]
+                    fn wit_import(_: i32, _: i32, _: i32);
+                }
+                wit_import(ptr0, len0, ptr1);
+                match i32::from(*((ptr1 + 0) as *const u8)) {
+                    0 => Ok(*((ptr1 + 4) as *const i32)),
+                    1 => Err(match i32::from(*((ptr1 + 4) as *const u8)) {
+                        0 => Error::ErrorWithDescription({
+                            let len2 = *((ptr1 + 12) as *const i32) as usize;
+
+                            String::from_utf8(Vec::from_raw_parts(
+                                *((ptr1 + 8) as *const i32) as *mut _,
+                                len2,
+                                len2,
+                            ))
+                            .unwrap()
+                        }),
+                        _ => panic!("invalid enum discriminant"),
+                    }),
+                    _ => panic!("invalid enum discriminant"),
+                }
+            }
+        }
+    }
+    impl Socket {
+        pub fn tcp_connect_with_options(
             remote_endpoint: &str,
             local_endpoint: &str,
             connect_timeout_in_ms: u32,
@@ -330,10 +367,13 @@ pub mod socket {
                 let ptr2 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
                 #[link(wasm_import_module = "socket")]
                 extern "C" {
-                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::tcp-connect")]
+                    #[cfg_attr(
+                        target_arch = "wasm32",
+                        link_name = "socket::tcp-connect-with-options"
+                    )]
                     #[cfg_attr(
                         not(target_arch = "wasm32"),
-                        link_name = "socket_socket::tcp-connect"
+                        link_name = "socket_socket::tcp-connect-with-options"
                     )]
                     fn wit_import(_: i32, _: i32, _: i32, _: i32, _: i32, _: i32);
                 }
