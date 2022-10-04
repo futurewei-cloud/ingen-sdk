@@ -83,12 +83,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "merak-evm-agent-wasm-sdk"
+version = "0.1.0"
+source = "git+https://github.com/futurewei-cloud/merak-evm-agent-api-wit?rev=428acafa29e1f35d7a770bdf40ea65ca3f0b83df#428acafa29e1f35d7a770bdf40ea65ca3f0b83df"
+dependencies = [
+ "anyhow",
+ "wit-bindgen-rust",
+ "wit-error-rs",
+]
+
+[[package]]
 name = "mio"
 version = "0.8.4"
 dependencies = [
  "libc",
  "log",
- "merak-evm-agent-wasm-sdk",
+ "merak-evm-agent-wasm-sdk 0.1.0 (git+https://github.com/futurewei-cloud/merak-evm-agent-api-wit?rev=428acafa29e1f35d7a770bdf40ea65ca3f0b83df)",
  "wasi",
  "windows-sys",
 ]
@@ -100,7 +110,7 @@ dependencies = [
  "anyhow",
  "bytes",
  "log",
- "merak-evm-agent-wasm-sdk",
+ "merak-evm-agent-wasm-sdk 0.1.0",
  "mio",
 ]
 

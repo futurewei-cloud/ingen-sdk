@@ -34,7 +34,7 @@ gen-wasmtime:
 # Build task:
 #
 build:
-    cargo build --profile {{BUILD_PROFILE}} --target wasm32-wasi --lib
+    cargo build --profile {{BUILD_PROFILE}} --target wasm32-wasi
 
 #
 # Format task:
