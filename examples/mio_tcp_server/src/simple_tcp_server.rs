@@ -229,6 +229,11 @@ impl SessionContext {
                             consumed,
                             response.len());
 
+                        // If we have any response, append it to write buffer.
+                        if response.len() > 0 {
+                            self.write_buf.extend_from_slice(&response[..]);
+                        }
+
                         // If we cannot consume any data now, it means we need more data to proceed. Break to read more.
                         if consumed == 0 {
                             break;
@@ -240,11 +245,8 @@ impl SessionContext {
                         if !self.has_pending_read_data() {
                             self.read_buf_start = 0;
                             self.next_read_start = 0;
+                            debug!("No more data to read. Break incoming data handling loop: Connection = {:?}", self.connection);
                             break;
-                        }
-
-                        if response.len() > 0 {
-                            self.write_buf.extend_from_slice(&response[..]);
                         }
                     }
                     Err(e) => {
