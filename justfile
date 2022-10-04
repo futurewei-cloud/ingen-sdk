@@ -17,15 +17,24 @@ init:
 #
 # SDK generation task:
 #
+gen: gen-wasm gen-wasmtime
+
 gen-wasm:
     wit-bindgen rust-wasm --rustfmt --import ./wit/common.wit --import ./wit/icmp.wit --import ./wit/socket.wit --out-dir ./wasm_sdk/src
     sed -i 's/^mod/pub mod/' ./wasm_sdk/src/bindings.rs
+
+gen-wasmtime:
+    wit-bindgen wasmtime --async all --rustfmt --export ./wit/common.wit --export ./wit/icmp.wit --out-dir ./wasmtime_sdk/src
+    mv ./wasmtime_sdk/src/bindings.rs ./wasmtime_sdk/src/bindings_icmp.rs 
+
+    wit-bindgen wasmtime --async all --rustfmt --export ./wit/common.wit --export ./wit/socket.wit --out-dir ./wasmtime_sdk/src
+    mv ./wasmtime_sdk/src/bindings.rs ./wasmtime_sdk/src/bindings_socket.rs 
 
 #
 # Build task:
 #
 build:
-    cd wasm_sdk && cargo build --profile {{BUILD_PROFILE}} --target wasm32-wasi --lib
+    cargo build --profile {{BUILD_PROFILE}} --target wasm32-wasi --lib
 
 #
 # Format task:

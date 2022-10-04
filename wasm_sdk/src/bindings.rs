@@ -240,30 +240,35 @@ pub mod socket {
         }
     }
     pub type RawFd = i32;
-    #[repr(u8)]
-    #[derive(Clone, Copy, PartialEq, Eq)]
-    pub enum SocketType {
-        SockStream,
+    #[repr(C)]
+    #[derive(Copy, Clone)]
+    pub struct TcpBindOptions {
+        pub backlog: u32,
+        pub nonblocking: bool,
+        pub reuse_address: bool,
     }
-    impl core::fmt::Debug for SocketType {
+    impl core::fmt::Debug for TcpBindOptions {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-            match self {
-                SocketType::SockStream => f.debug_tuple("SocketType::SockStream").finish(),
-            }
+            f.debug_struct("TcpBindOptions")
+                .field("backlog", &self.backlog)
+                .field("nonblocking", &self.nonblocking)
+                .field("reuse-address", &self.reuse_address)
+                .finish()
         }
     }
-    #[repr(u8)]
-    #[derive(Clone, Copy, PartialEq, Eq)]
-    pub enum AddressFamily {
-        AfInet,
-        AfInet6,
+    #[derive(Clone)]
+    pub struct TcpConnectOptions<'a> {
+        pub local_endpoint: &'a str,
+        pub nonblocking: bool,
+        pub connect_timeout_in_ms: u32,
     }
-    impl core::fmt::Debug for AddressFamily {
+    impl<'a> core::fmt::Debug for TcpConnectOptions<'a> {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-            match self {
-                AddressFamily::AfInet => f.debug_tuple("AddressFamily::AfInet").finish(),
-                AddressFamily::AfInet6 => f.debug_tuple("AddressFamily::AfInet6").finish(),
-            }
+            f.debug_struct("TcpConnectOptions")
+                .field("local-endpoint", &self.local_endpoint)
+                .field("nonblocking", &self.nonblocking)
+                .field("connect-timeout-in-ms", &self.connect_timeout_in_ms)
+                .finish()
         }
     }
     #[derive(Debug)]
@@ -307,185 +312,47 @@ pub mod socket {
         }
     }
     impl Socket {
-        pub fn new(st: SocketType, af: AddressFamily) -> Result<RawFd, Error> {
-            unsafe {
-                let ptr0 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
-                #[link(wasm_import_module = "socket")]
-                extern "C" {
-                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::new")]
-                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::new")]
-                    fn wit_import(_: i32, _: i32, _: i32);
-                }
-                wit_import(
-                    match st {
-                        SocketType::SockStream => 0,
-                    },
-                    match af {
-                        AddressFamily::AfInet => 0,
-                        AddressFamily::AfInet6 => 1,
-                    },
-                    ptr0,
-                );
-                match i32::from(*((ptr0 + 0) as *const u8)) {
-                    0 => Ok(*((ptr0 + 4) as *const i32)),
-                    1 => Err(match i32::from(*((ptr0 + 4) as *const u8)) {
-                        0 => Error::ErrorWithDescription({
-                            let len1 = *((ptr0 + 12) as *const i32) as usize;
-
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                            .unwrap()
-                        }),
-                        _ => panic!("invalid enum discriminant"),
-                    }),
-                    _ => panic!("invalid enum discriminant"),
-                }
-            }
-        }
-    }
-    impl Socket {
-        pub fn bind(socket: RawFd, endpoint: &str) -> Result<(), Error> {
+        pub fn tcp_bind(endpoint: &str, options: TcpBindOptions) -> Result<RawFd, Error> {
             unsafe {
                 let vec0 = endpoint;
                 let ptr0 = vec0.as_ptr() as i32;
                 let len0 = vec0.len() as i32;
-                let ptr1 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
+                let TcpBindOptions {
+                    backlog: backlog1,
+                    nonblocking: nonblocking1,
+                    reuse_address: reuse_address1,
+                } = options;
+                let ptr2 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
                 #[link(wasm_import_module = "socket")]
                 extern "C" {
-                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::bind")]
-                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::bind")]
-                    fn wit_import(_: i32, _: i32, _: i32, _: i32);
-                }
-                wit_import(wit_bindgen_rust::rt::as_i32(socket), ptr0, len0, ptr1);
-                match i32::from(*((ptr1 + 0) as *const u8)) {
-                    0 => Ok(()),
-                    1 => Err(match i32::from(*((ptr1 + 4) as *const u8)) {
-                        0 => Error::ErrorWithDescription({
-                            let len2 = *((ptr1 + 12) as *const i32) as usize;
-
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr1 + 8) as *const i32) as *mut _,
-                                len2,
-                                len2,
-                            ))
-                            .unwrap()
-                        }),
-                        _ => panic!("invalid enum discriminant"),
-                    }),
-                    _ => panic!("invalid enum discriminant"),
-                }
-            }
-        }
-    }
-    impl Socket {
-        pub fn listen(socket: RawFd, backlog: u32) -> Result<(), Error> {
-            unsafe {
-                let ptr0 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
-                #[link(wasm_import_module = "socket")]
-                extern "C" {
-                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::listen")]
-                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::listen")]
-                    fn wit_import(_: i32, _: i32, _: i32);
+                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::tcp-bind")]
+                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::tcp-bind")]
+                    fn wit_import(_: i32, _: i32, _: i32, _: i32, _: i32, _: i32);
                 }
                 wit_import(
-                    wit_bindgen_rust::rt::as_i32(socket),
-                    wit_bindgen_rust::rt::as_i32(backlog),
-                    ptr0,
-                );
-                match i32::from(*((ptr0 + 0) as *const u8)) {
-                    0 => Ok(()),
-                    1 => Err(match i32::from(*((ptr0 + 4) as *const u8)) {
-                        0 => Error::ErrorWithDescription({
-                            let len1 = *((ptr0 + 12) as *const i32) as usize;
-
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                            .unwrap()
-                        }),
-                        _ => panic!("invalid enum discriminant"),
-                    }),
-                    _ => panic!("invalid enum discriminant"),
-                }
-            }
-        }
-    }
-    impl Socket {
-        pub fn connect(socket: RawFd, remote_endpoint: &str) -> Result<(), Error> {
-            unsafe {
-                let vec0 = remote_endpoint;
-                let ptr0 = vec0.as_ptr() as i32;
-                let len0 = vec0.len() as i32;
-                let ptr1 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
-                #[link(wasm_import_module = "socket")]
-                extern "C" {
-                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::connect")]
-                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::connect")]
-                    fn wit_import(_: i32, _: i32, _: i32, _: i32);
-                }
-                wit_import(wit_bindgen_rust::rt::as_i32(socket), ptr0, len0, ptr1);
-                match i32::from(*((ptr1 + 0) as *const u8)) {
-                    0 => Ok(()),
-                    1 => Err(match i32::from(*((ptr1 + 4) as *const u8)) {
-                        0 => Error::ErrorWithDescription({
-                            let len2 = *((ptr1 + 12) as *const i32) as usize;
-
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr1 + 8) as *const i32) as *mut _,
-                                len2,
-                                len2,
-                            ))
-                            .unwrap()
-                        }),
-                        _ => panic!("invalid enum discriminant"),
-                    }),
-                    _ => panic!("invalid enum discriminant"),
-                }
-            }
-        }
-    }
-    impl Socket {
-        pub fn connect_timeout(
-            socket: RawFd,
-            remote_endpoint: &str,
-            connect_timeout_in_ms: u32,
-        ) -> Result<(), Error> {
-            unsafe {
-                let vec0 = remote_endpoint;
-                let ptr0 = vec0.as_ptr() as i32;
-                let len0 = vec0.len() as i32;
-                let ptr1 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
-                #[link(wasm_import_module = "socket")]
-                extern "C" {
-                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::connect-timeout")]
-                    #[cfg_attr(
-                        not(target_arch = "wasm32"),
-                        link_name = "socket_socket::connect-timeout"
-                    )]
-                    fn wit_import(_: i32, _: i32, _: i32, _: i32, _: i32);
-                }
-                wit_import(
-                    wit_bindgen_rust::rt::as_i32(socket),
                     ptr0,
                     len0,
-                    wit_bindgen_rust::rt::as_i32(connect_timeout_in_ms),
-                    ptr1,
+                    wit_bindgen_rust::rt::as_i32(backlog1),
+                    match nonblocking1 {
+                        true => 1,
+                        false => 0,
+                    },
+                    match reuse_address1 {
+                        true => 1,
+                        false => 0,
+                    },
+                    ptr2,
                 );
-                match i32::from(*((ptr1 + 0) as *const u8)) {
-                    0 => Ok(()),
-                    1 => Err(match i32::from(*((ptr1 + 4) as *const u8)) {
+                match i32::from(*((ptr2 + 0) as *const u8)) {
+                    0 => Ok(*((ptr2 + 4) as *const i32)),
+                    1 => Err(match i32::from(*((ptr2 + 4) as *const u8)) {
                         0 => Error::ErrorWithDescription({
-                            let len2 = *((ptr1 + 12) as *const i32) as usize;
+                            let len3 = *((ptr2 + 12) as *const i32) as usize;
 
                             String::from_utf8(Vec::from_raw_parts(
-                                *((ptr1 + 8) as *const i32) as *mut _,
-                                len2,
-                                len2,
+                                *((ptr2 + 8) as *const i32) as *mut _,
+                                len3,
+                                len3,
                             ))
                             .unwrap()
                         }),
@@ -497,77 +364,54 @@ pub mod socket {
         }
     }
     impl Socket {
-        pub fn set_nonblocking(socket: RawFd, nonblocking: bool) -> Result<(), Error> {
+        pub fn tcp_connect(
+            remote_endpoint: &str,
+            options: TcpConnectOptions<'_>,
+        ) -> Result<RawFd, Error> {
             unsafe {
-                let ptr0 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
+                let vec0 = remote_endpoint;
+                let ptr0 = vec0.as_ptr() as i32;
+                let len0 = vec0.len() as i32;
+                let TcpConnectOptions {
+                    local_endpoint: local_endpoint1,
+                    nonblocking: nonblocking1,
+                    connect_timeout_in_ms: connect_timeout_in_ms1,
+                } = options;
+                let vec2 = local_endpoint1;
+                let ptr2 = vec2.as_ptr() as i32;
+                let len2 = vec2.len() as i32;
+                let ptr3 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
                 #[link(wasm_import_module = "socket")]
                 extern "C" {
-                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::set-nonblocking")]
+                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::tcp-connect")]
                     #[cfg_attr(
                         not(target_arch = "wasm32"),
-                        link_name = "socket_socket::set-nonblocking"
+                        link_name = "socket_socket::tcp-connect"
                     )]
-                    fn wit_import(_: i32, _: i32, _: i32);
+                    fn wit_import(_: i32, _: i32, _: i32, _: i32, _: i32, _: i32, _: i32);
                 }
                 wit_import(
-                    wit_bindgen_rust::rt::as_i32(socket),
-                    match nonblocking {
+                    ptr0,
+                    len0,
+                    ptr2,
+                    len2,
+                    match nonblocking1 {
                         true => 1,
                         false => 0,
                     },
-                    ptr0,
+                    wit_bindgen_rust::rt::as_i32(connect_timeout_in_ms1),
+                    ptr3,
                 );
-                match i32::from(*((ptr0 + 0) as *const u8)) {
-                    0 => Ok(()),
-                    1 => Err(match i32::from(*((ptr0 + 4) as *const u8)) {
+                match i32::from(*((ptr3 + 0) as *const u8)) {
+                    0 => Ok(*((ptr3 + 4) as *const i32)),
+                    1 => Err(match i32::from(*((ptr3 + 4) as *const u8)) {
                         0 => Error::ErrorWithDescription({
-                            let len1 = *((ptr0 + 12) as *const i32) as usize;
+                            let len4 = *((ptr3 + 12) as *const i32) as usize;
 
                             String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                            .unwrap()
-                        }),
-                        _ => panic!("invalid enum discriminant"),
-                    }),
-                    _ => panic!("invalid enum discriminant"),
-                }
-            }
-        }
-    }
-    impl Socket {
-        pub fn set_reuse_address(socket: RawFd, reuse: bool) -> Result<(), Error> {
-            unsafe {
-                let ptr0 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
-                #[link(wasm_import_module = "socket")]
-                extern "C" {
-                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::set-reuse-address")]
-                    #[cfg_attr(
-                        not(target_arch = "wasm32"),
-                        link_name = "socket_socket::set-reuse-address"
-                    )]
-                    fn wit_import(_: i32, _: i32, _: i32);
-                }
-                wit_import(
-                    wit_bindgen_rust::rt::as_i32(socket),
-                    match reuse {
-                        true => 1,
-                        false => 0,
-                    },
-                    ptr0,
-                );
-                match i32::from(*((ptr0 + 0) as *const u8)) {
-                    0 => Ok(()),
-                    1 => Err(match i32::from(*((ptr0 + 4) as *const u8)) {
-                        0 => Error::ErrorWithDescription({
-                            let len1 = *((ptr0 + 12) as *const i32) as usize;
-
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len1,
-                                len1,
+                                *((ptr3 + 8) as *const i32) as *mut _,
+                                len4,
+                                len4,
                             ))
                             .unwrap()
                         }),

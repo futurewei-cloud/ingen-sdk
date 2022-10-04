@@ -3,6 +3,9 @@ members = [
     "wasm_sdk",
     "examples/mio_tcp_server"
 ]
+exclude = [
+    "wasmtime_sdk"
+]
 
 [profile.dev]
 panic = "abort"             # Abort on panic to make it more friendly for debugger

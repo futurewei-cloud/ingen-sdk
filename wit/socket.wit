@@ -2,24 +2,20 @@ use { error } from common
 
 type raw-fd = s32
 
-enum socket-type {
-    sock-stream,
+record tcp-bind-options {
+    backlog: u32,
+    nonblocking: bool,
+    reuse-address: bool,
 }
 
-enum address-family {
-    af-inet,
-    af-inet6,
+record tcp-connect-options {
+    local-endpoint: string,
+    nonblocking: bool,
+    connect-timeout-in-ms: u32,
 }
 
 resource socket {
     // creation
-    static new: func(st: socket-type, af: address-family) -> expected<raw-fd, error>
-    static bind: func(socket: raw-fd, endpoint: string) -> expected<unit, error>
-    static listen: func(socket: raw-fd, backlog: u32) -> expected<unit, error>
-    static connect: func(socket: raw-fd, remote-endpoint: string) -> expected<unit, error>
-    static connect-timeout: func(socket: raw-fd, remote-endpoint: string, connect-timeout-in-ms: u32) -> expected<unit, error>
-
-    // socket opts
-    static set-nonblocking: func(socket: raw-fd, nonblocking: bool) -> expected<unit, error>
-    static set-reuse-address: func(socket: raw-fd, reuse: bool) -> expected<unit, error>
+    static tcp-bind: func(endpoint: string, options: tcp-bind-options) -> expected<raw-fd, error>
+    static tcp-connect: func(remote-endpoint: string, options: tcp-connect-options) -> expected<raw-fd, error>
 }
