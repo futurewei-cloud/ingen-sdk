@@ -1,11 +1,11 @@
 [package]
-name = "mio_tcp_server"
+name = "mio_tcp_echo"
 version = "0.1.0"
 edition = "2021"
 publish = false
 
 [[bin]]
-name = "example-mio-tcp-server"
+name = "example_mio_tcp_echo"
 path = "src/main.rs"
 
 [dependencies]
@@ -14,4 +14,4 @@ log = "0.4"
 env_logger = "0.9"
 bytes = "1.2"
 merak-evm-agent-wasm-sdk = { path = "../../wasm_sdk" }
-mio = { path = "../../../wasm/mio", features = ["net", "os-poll"] }
+mio = { git = "https://github.com/futurewei-cloud/mio", branch = "wasmdev", features = ["net", "os-poll"] }

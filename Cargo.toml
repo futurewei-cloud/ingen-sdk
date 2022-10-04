@@ -1,7 +1,8 @@
 [workspace]
 members = [
     "wasm_sdk",
-    "examples/mio_tcp_server"
+    "examples/mio_tcp_echo",
+    "examples/tokio_tcp_echo",
 ]
 exclude = [
     "wasmtime_sdk"
