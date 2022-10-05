@@ -70,6 +70,44 @@ pub mod socket {
             options: TcpConnectOptions<'_>,
         ) -> Result<RawFd, Error>;
 
+        async fn socket_get_local_addr(
+            &mut self,
+            wasi_ctx: &mut wasmtime_wasi::WasiCtx,
+            fd: RawFd,
+        ) -> Result<String, Error>;
+
+        async fn socket_get_peer_addr(
+            &mut self,
+            wasi_ctx: &mut wasmtime_wasi::WasiCtx,
+            fd: RawFd,
+        ) -> Result<String, Error>;
+
+        async fn socket_get_ttl(
+            &mut self,
+            wasi_ctx: &mut wasmtime_wasi::WasiCtx,
+            fd: RawFd,
+        ) -> Result<u32, Error>;
+
+        async fn socket_set_ttl(
+            &mut self,
+            wasi_ctx: &mut wasmtime_wasi::WasiCtx,
+            fd: RawFd,
+            ttl: u32,
+        ) -> Result<(), Error>;
+
+        async fn socket_get_nodelay(
+            &mut self,
+            wasi_ctx: &mut wasmtime_wasi::WasiCtx,
+            fd: RawFd,
+        ) -> Result<bool, Error>;
+
+        async fn socket_set_nodelay(
+            &mut self,
+            wasi_ctx: &mut wasmtime_wasi::WasiCtx,
+            fd: RawFd,
+            nodelay: bool,
+        ) -> Result<(), Error>;
+
         fn drop_socket(&mut self, state: Self::Socket) {
             drop(state);
         }
@@ -254,6 +292,371 @@ pub mod socket {
                                     )?;
                                     caller_memory
                                         .store(arg6 + 8, wit_bindgen_wasmtime::rt::as_i32(ptr2))?;
+                                }
+                            };
+                        }
+                    };
+                    Ok(())
+                })
+            },
+        )?;
+        linker.func_wrap2_async(
+            "socket",
+            "socket::get-local-addr",
+            move |mut caller: wasmtime::Caller<'_, T>, arg0: i32, arg1: i32| {
+                Box::new(async move {
+                    let func = get_func(&mut caller, "canonical_abi_realloc")?;
+                    let func_canonical_abi_realloc =
+                        func.typed::<(i32, i32, i32, i32), i32, _>(&caller)?;
+                    let memory = &get_memory(&mut caller, "memory")?;
+                    let host = get(caller.data_mut());
+                    let (host, wasi_ctx, _tables) = host;
+                    let param0 = arg0;
+                    let result = host.socket_get_local_addr(wasi_ctx, param0).await;
+                    match result {
+                        Ok(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg1 + 0, wit_bindgen_wasmtime::rt::as_i32(0i32) as u8)?;
+                            let vec0 = e;
+                            let ptr0 = func_canonical_abi_realloc
+                                .call_async(&mut caller, (0, 0, 1, vec0.len() as i32))
+                                .await?;
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory.store_many(ptr0, vec0.as_bytes())?;
+                            caller_memory.store(
+                                arg1 + 8,
+                                wit_bindgen_wasmtime::rt::as_i32(vec0.len() as i32),
+                            )?;
+                            caller_memory
+                                .store(arg1 + 4, wit_bindgen_wasmtime::rt::as_i32(ptr0))?;
+                        }
+                        Err(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg1 + 0, wit_bindgen_wasmtime::rt::as_i32(1i32) as u8)?;
+                            match e {
+                                Error::ErrorWithDescription(e) => {
+                                    caller_memory.store(
+                                        arg1 + 4,
+                                        wit_bindgen_wasmtime::rt::as_i32(0i32) as u8,
+                                    )?;
+                                    let vec1 = e;
+                                    let ptr1 = func_canonical_abi_realloc
+                                        .call_async(&mut caller, (0, 0, 1, vec1.len() as i32))
+                                        .await?;
+                                    let (caller_memory, data) =
+                                        memory.data_and_store_mut(&mut caller);
+                                    let (_, _wasi_ctx, _tables) = get(data);
+                                    caller_memory.store_many(ptr1, vec1.as_bytes())?;
+                                    caller_memory.store(
+                                        arg1 + 12,
+                                        wit_bindgen_wasmtime::rt::as_i32(vec1.len() as i32),
+                                    )?;
+                                    caller_memory
+                                        .store(arg1 + 8, wit_bindgen_wasmtime::rt::as_i32(ptr1))?;
+                                }
+                            };
+                        }
+                    };
+                    Ok(())
+                })
+            },
+        )?;
+        linker.func_wrap2_async(
+            "socket",
+            "socket::get-peer-addr",
+            move |mut caller: wasmtime::Caller<'_, T>, arg0: i32, arg1: i32| {
+                Box::new(async move {
+                    let func = get_func(&mut caller, "canonical_abi_realloc")?;
+                    let func_canonical_abi_realloc =
+                        func.typed::<(i32, i32, i32, i32), i32, _>(&caller)?;
+                    let memory = &get_memory(&mut caller, "memory")?;
+                    let host = get(caller.data_mut());
+                    let (host, wasi_ctx, _tables) = host;
+                    let param0 = arg0;
+                    let result = host.socket_get_peer_addr(wasi_ctx, param0).await;
+                    match result {
+                        Ok(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg1 + 0, wit_bindgen_wasmtime::rt::as_i32(0i32) as u8)?;
+                            let vec0 = e;
+                            let ptr0 = func_canonical_abi_realloc
+                                .call_async(&mut caller, (0, 0, 1, vec0.len() as i32))
+                                .await?;
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory.store_many(ptr0, vec0.as_bytes())?;
+                            caller_memory.store(
+                                arg1 + 8,
+                                wit_bindgen_wasmtime::rt::as_i32(vec0.len() as i32),
+                            )?;
+                            caller_memory
+                                .store(arg1 + 4, wit_bindgen_wasmtime::rt::as_i32(ptr0))?;
+                        }
+                        Err(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg1 + 0, wit_bindgen_wasmtime::rt::as_i32(1i32) as u8)?;
+                            match e {
+                                Error::ErrorWithDescription(e) => {
+                                    caller_memory.store(
+                                        arg1 + 4,
+                                        wit_bindgen_wasmtime::rt::as_i32(0i32) as u8,
+                                    )?;
+                                    let vec1 = e;
+                                    let ptr1 = func_canonical_abi_realloc
+                                        .call_async(&mut caller, (0, 0, 1, vec1.len() as i32))
+                                        .await?;
+                                    let (caller_memory, data) =
+                                        memory.data_and_store_mut(&mut caller);
+                                    let (_, _wasi_ctx, _tables) = get(data);
+                                    caller_memory.store_many(ptr1, vec1.as_bytes())?;
+                                    caller_memory.store(
+                                        arg1 + 12,
+                                        wit_bindgen_wasmtime::rt::as_i32(vec1.len() as i32),
+                                    )?;
+                                    caller_memory
+                                        .store(arg1 + 8, wit_bindgen_wasmtime::rt::as_i32(ptr1))?;
+                                }
+                            };
+                        }
+                    };
+                    Ok(())
+                })
+            },
+        )?;
+        linker.func_wrap2_async(
+            "socket",
+            "socket::get-ttl",
+            move |mut caller: wasmtime::Caller<'_, T>, arg0: i32, arg1: i32| {
+                Box::new(async move {
+                    let func = get_func(&mut caller, "canonical_abi_realloc")?;
+                    let func_canonical_abi_realloc =
+                        func.typed::<(i32, i32, i32, i32), i32, _>(&caller)?;
+                    let memory = &get_memory(&mut caller, "memory")?;
+                    let host = get(caller.data_mut());
+                    let (host, wasi_ctx, _tables) = host;
+                    let param0 = arg0;
+                    let result = host.socket_get_ttl(wasi_ctx, param0).await;
+                    match result {
+                        Ok(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg1 + 0, wit_bindgen_wasmtime::rt::as_i32(0i32) as u8)?;
+                            caller_memory.store(
+                                arg1 + 4,
+                                wit_bindgen_wasmtime::rt::as_i32(wit_bindgen_wasmtime::rt::as_i32(
+                                    e,
+                                )),
+                            )?;
+                        }
+                        Err(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg1 + 0, wit_bindgen_wasmtime::rt::as_i32(1i32) as u8)?;
+                            match e {
+                                Error::ErrorWithDescription(e) => {
+                                    caller_memory.store(
+                                        arg1 + 4,
+                                        wit_bindgen_wasmtime::rt::as_i32(0i32) as u8,
+                                    )?;
+                                    let vec0 = e;
+                                    let ptr0 = func_canonical_abi_realloc
+                                        .call_async(&mut caller, (0, 0, 1, vec0.len() as i32))
+                                        .await?;
+                                    let (caller_memory, data) =
+                                        memory.data_and_store_mut(&mut caller);
+                                    let (_, _wasi_ctx, _tables) = get(data);
+                                    caller_memory.store_many(ptr0, vec0.as_bytes())?;
+                                    caller_memory.store(
+                                        arg1 + 12,
+                                        wit_bindgen_wasmtime::rt::as_i32(vec0.len() as i32),
+                                    )?;
+                                    caller_memory
+                                        .store(arg1 + 8, wit_bindgen_wasmtime::rt::as_i32(ptr0))?;
+                                }
+                            };
+                        }
+                    };
+                    Ok(())
+                })
+            },
+        )?;
+        linker.func_wrap3_async(
+            "socket",
+            "socket::set-ttl",
+            move |mut caller: wasmtime::Caller<'_, T>, arg0: i32, arg1: i32, arg2: i32| {
+                Box::new(async move {
+                    let func = get_func(&mut caller, "canonical_abi_realloc")?;
+                    let func_canonical_abi_realloc =
+                        func.typed::<(i32, i32, i32, i32), i32, _>(&caller)?;
+                    let memory = &get_memory(&mut caller, "memory")?;
+                    let host = get(caller.data_mut());
+                    let (host, wasi_ctx, _tables) = host;
+                    let param0 = arg0;
+                    let param1 = arg1 as u32;
+                    let result = host.socket_set_ttl(wasi_ctx, param0, param1).await;
+                    match result {
+                        Ok(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg2 + 0, wit_bindgen_wasmtime::rt::as_i32(0i32) as u8)?;
+                            let () = e;
+                        }
+                        Err(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg2 + 0, wit_bindgen_wasmtime::rt::as_i32(1i32) as u8)?;
+                            match e {
+                                Error::ErrorWithDescription(e) => {
+                                    caller_memory.store(
+                                        arg2 + 4,
+                                        wit_bindgen_wasmtime::rt::as_i32(0i32) as u8,
+                                    )?;
+                                    let vec0 = e;
+                                    let ptr0 = func_canonical_abi_realloc
+                                        .call_async(&mut caller, (0, 0, 1, vec0.len() as i32))
+                                        .await?;
+                                    let (caller_memory, data) =
+                                        memory.data_and_store_mut(&mut caller);
+                                    let (_, _wasi_ctx, _tables) = get(data);
+                                    caller_memory.store_many(ptr0, vec0.as_bytes())?;
+                                    caller_memory.store(
+                                        arg2 + 12,
+                                        wit_bindgen_wasmtime::rt::as_i32(vec0.len() as i32),
+                                    )?;
+                                    caller_memory
+                                        .store(arg2 + 8, wit_bindgen_wasmtime::rt::as_i32(ptr0))?;
+                                }
+                            };
+                        }
+                    };
+                    Ok(())
+                })
+            },
+        )?;
+        linker.func_wrap2_async(
+            "socket",
+            "socket::get-nodelay",
+            move |mut caller: wasmtime::Caller<'_, T>, arg0: i32, arg1: i32| {
+                Box::new(async move {
+                    let func = get_func(&mut caller, "canonical_abi_realloc")?;
+                    let func_canonical_abi_realloc =
+                        func.typed::<(i32, i32, i32, i32), i32, _>(&caller)?;
+                    let memory = &get_memory(&mut caller, "memory")?;
+                    let host = get(caller.data_mut());
+                    let (host, wasi_ctx, _tables) = host;
+                    let param0 = arg0;
+                    let result = host.socket_get_nodelay(wasi_ctx, param0).await;
+                    match result {
+                        Ok(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg1 + 0, wit_bindgen_wasmtime::rt::as_i32(0i32) as u8)?;
+                            caller_memory.store(
+                                arg1 + 4,
+                                wit_bindgen_wasmtime::rt::as_i32(match e {
+                                    true => 1,
+                                    false => 0,
+                                }) as u8,
+                            )?;
+                        }
+                        Err(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg1 + 0, wit_bindgen_wasmtime::rt::as_i32(1i32) as u8)?;
+                            match e {
+                                Error::ErrorWithDescription(e) => {
+                                    caller_memory.store(
+                                        arg1 + 4,
+                                        wit_bindgen_wasmtime::rt::as_i32(0i32) as u8,
+                                    )?;
+                                    let vec0 = e;
+                                    let ptr0 = func_canonical_abi_realloc
+                                        .call_async(&mut caller, (0, 0, 1, vec0.len() as i32))
+                                        .await?;
+                                    let (caller_memory, data) =
+                                        memory.data_and_store_mut(&mut caller);
+                                    let (_, _wasi_ctx, _tables) = get(data);
+                                    caller_memory.store_many(ptr0, vec0.as_bytes())?;
+                                    caller_memory.store(
+                                        arg1 + 12,
+                                        wit_bindgen_wasmtime::rt::as_i32(vec0.len() as i32),
+                                    )?;
+                                    caller_memory
+                                        .store(arg1 + 8, wit_bindgen_wasmtime::rt::as_i32(ptr0))?;
+                                }
+                            };
+                        }
+                    };
+                    Ok(())
+                })
+            },
+        )?;
+        linker.func_wrap3_async(
+            "socket",
+            "socket::set-nodelay",
+            move |mut caller: wasmtime::Caller<'_, T>, arg0: i32, arg1: i32, arg2: i32| {
+                Box::new(async move {
+                    let func = get_func(&mut caller, "canonical_abi_realloc")?;
+                    let func_canonical_abi_realloc =
+                        func.typed::<(i32, i32, i32, i32), i32, _>(&caller)?;
+                    let memory = &get_memory(&mut caller, "memory")?;
+                    let host = get(caller.data_mut());
+                    let (host, wasi_ctx, _tables) = host;
+                    let param0 = arg0;
+                    let param1 = match arg1 {
+                        0 => false,
+                        1 => true,
+                        _ => return Err(invalid_variant("bool")),
+                    };
+                    let result = host.socket_set_nodelay(wasi_ctx, param0, param1).await;
+                    match result {
+                        Ok(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg2 + 0, wit_bindgen_wasmtime::rt::as_i32(0i32) as u8)?;
+                            let () = e;
+                        }
+                        Err(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg2 + 0, wit_bindgen_wasmtime::rt::as_i32(1i32) as u8)?;
+                            match e {
+                                Error::ErrorWithDescription(e) => {
+                                    caller_memory.store(
+                                        arg2 + 4,
+                                        wit_bindgen_wasmtime::rt::as_i32(0i32) as u8,
+                                    )?;
+                                    let vec0 = e;
+                                    let ptr0 = func_canonical_abi_realloc
+                                        .call_async(&mut caller, (0, 0, 1, vec0.len() as i32))
+                                        .await?;
+                                    let (caller_memory, data) =
+                                        memory.data_and_store_mut(&mut caller);
+                                    let (_, _wasi_ctx, _tables) = get(data);
+                                    caller_memory.store_many(ptr0, vec0.as_bytes())?;
+                                    caller_memory.store(
+                                        arg2 + 12,
+                                        wit_bindgen_wasmtime::rt::as_i32(vec0.len() as i32),
+                                    )?;
+                                    caller_memory
+                                        .store(arg2 + 8, wit_bindgen_wasmtime::rt::as_i32(ptr0))?;
                                 }
                             };
                         }

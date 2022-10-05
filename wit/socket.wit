@@ -18,4 +18,14 @@ resource socket {
     // creation
     static tcp-bind: func(endpoint: string, options: tcp-bind-options) -> expected<raw-fd, error>
     static tcp-connect: func(remote-endpoint: string, options: tcp-connect-options) -> expected<raw-fd, error>
+    
+    // socket opts
+    static get-local-addr: func(fd: raw-fd) -> expected<string, error>
+    static get-peer-addr: func(fd: raw-fd) -> expected<string, error>
+
+    static get-ttl: func(fd: raw-fd) -> expected<u32, error>
+    static set-ttl: func(fd: raw-fd, ttl: u32) -> expected<unit, error>
+
+    static get-nodelay: func(fd: raw-fd) -> expected<bool, error>
+    static set-nodelay: func(fd: raw-fd, nodelay: bool) -> expected<unit, error>
 }

@@ -3,6 +3,7 @@ members = [
     "wasm_sdk",
     "examples/mio_tcp_echo",
     "examples/tokio_tcp_echo",
+    "examples/h2_hello_world_server",
 ]
 exclude = [
     "wasmtime_sdk"

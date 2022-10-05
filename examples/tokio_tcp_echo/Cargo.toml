@@ -12,5 +12,4 @@ path = "main.rs"
 anyhow = "1"
 log = "0.4"
 env_logger = "0.9"
-merak-evm-agent-wasm-sdk = { path = "../../wasm_sdk" }
 tokio = { git = "https://github.com/futurewei-cloud/tokio", branch = "wasmdev", features = ["rt", "time", "sync", "macros", "io-util", "net"] }
