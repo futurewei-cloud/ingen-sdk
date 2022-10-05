@@ -52,4 +52,4 @@ lint-fix:
     cargo clippy --all-targets --all-features --fix --allow-dirty
 
 run EXAMPLE *ARGS:
-    RUST_BACKTRACE=full RUST_LOG="warn,evm_runner=info" evmah ./target/wasm32-wasi/{{BUILD_FLAVOR}}/example_{{EXAMPLE}}.wasm --env "RUST_LOG=debug" {{ARGS}}
+    RUST_BACKTRACE=full RUST_LOG="warn,evm_runner=info" evmah ./target/wasm32-wasi/{{BUILD_FLAVOR}}/example_{{EXAMPLE}}.wasm --env "RUST_LOG=debug" --env "RUST_BACKTRACE=full" {{ARGS}}
