@@ -14,10 +14,19 @@ record tcp-connect-options {
     connect-timeout-in-ms: u32,
 }
 
+enum shutdown-option {
+    read,
+    write,
+    both,
+}
+
 resource socket {
     // creation
     static tcp-bind: func(endpoint: string, options: tcp-bind-options) -> expected<raw-fd, error>
     static tcp-connect: func(remote-endpoint: string, options: tcp-connect-options) -> expected<raw-fd, error>
+
+    // shutdown
+    static shutdown: func(fd: raw-fd, opt: shutdown-option) -> expected<unit, error>
     
     // socket opts
     static get-local-addr: func(fd: raw-fd) -> expected<string, error>

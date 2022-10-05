@@ -271,6 +271,22 @@ pub mod socket {
                 .finish()
         }
     }
+    #[repr(u8)]
+    #[derive(Clone, Copy, PartialEq, Eq)]
+    pub enum ShutdownOption {
+        Read,
+        Write,
+        Both,
+    }
+    impl core::fmt::Debug for ShutdownOption {
+        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+            match self {
+                ShutdownOption::Read => f.debug_tuple("ShutdownOption::Read").finish(),
+                ShutdownOption::Write => f.debug_tuple("ShutdownOption::Write").finish(),
+                ShutdownOption::Both => f.debug_tuple("ShutdownOption::Both").finish(),
+            }
+        }
+    }
     #[derive(Debug)]
     #[repr(transparent)]
     pub struct Socket(i32);
@@ -412,6 +428,45 @@ pub mod socket {
                                 *((ptr3 + 8) as *const i32) as *mut _,
                                 len4,
                                 len4,
+                            ))
+                            .unwrap()
+                        }),
+                        _ => panic!("invalid enum discriminant"),
+                    }),
+                    _ => panic!("invalid enum discriminant"),
+                }
+            }
+        }
+    }
+    impl Socket {
+        pub fn shutdown(fd: RawFd, opt: ShutdownOption) -> Result<(), Error> {
+            unsafe {
+                let ptr0 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
+                #[link(wasm_import_module = "socket")]
+                extern "C" {
+                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::shutdown")]
+                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::shutdown")]
+                    fn wit_import(_: i32, _: i32, _: i32);
+                }
+                wit_import(
+                    wit_bindgen_rust::rt::as_i32(fd),
+                    match opt {
+                        ShutdownOption::Read => 0,
+                        ShutdownOption::Write => 1,
+                        ShutdownOption::Both => 2,
+                    },
+                    ptr0,
+                );
+                match i32::from(*((ptr0 + 0) as *const u8)) {
+                    0 => Ok(()),
+                    1 => Err(match i32::from(*((ptr0 + 4) as *const u8)) {
+                        0 => Error::ErrorWithDescription({
+                            let len1 = *((ptr0 + 12) as *const i32) as usize;
+
+                            String::from_utf8(Vec::from_raw_parts(
+                                *((ptr0 + 8) as *const i32) as *mut _,
+                                len1,
+                                len1,
                             ))
                             .unwrap()
                         }),
