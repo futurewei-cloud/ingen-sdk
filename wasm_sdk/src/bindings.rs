@@ -261,6 +261,10 @@ pub mod socket {
         pub local_endpoint: &'a str,
         pub nonblocking: bool,
         pub connect_timeout_in_ms: u32,
+        pub keep_alive_timeout_in_ms: u32,
+        pub reuse_address: bool,
+        pub send_buffer_size: u32,
+        pub recv_buffer_size: u32,
     }
     impl<'a> core::fmt::Debug for TcpConnectOptions<'a> {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
@@ -268,6 +272,10 @@ pub mod socket {
                 .field("local-endpoint", &self.local_endpoint)
                 .field("nonblocking", &self.nonblocking)
                 .field("connect-timeout-in-ms", &self.connect_timeout_in_ms)
+                .field("keep-alive-timeout-in-ms", &self.keep_alive_timeout_in_ms)
+                .field("reuse-address", &self.reuse_address)
+                .field("send-buffer-size", &self.send_buffer_size)
+                .field("recv-buffer-size", &self.recv_buffer_size)
                 .finish()
         }
     }
@@ -392,6 +400,10 @@ pub mod socket {
                     local_endpoint: local_endpoint1,
                     nonblocking: nonblocking1,
                     connect_timeout_in_ms: connect_timeout_in_ms1,
+                    keep_alive_timeout_in_ms: keep_alive_timeout_in_ms1,
+                    reuse_address: reuse_address1,
+                    send_buffer_size: send_buffer_size1,
+                    recv_buffer_size: recv_buffer_size1,
                 } = options;
                 let vec2 = local_endpoint1;
                 let ptr2 = vec2.as_ptr() as i32;
@@ -404,7 +416,19 @@ pub mod socket {
                         not(target_arch = "wasm32"),
                         link_name = "socket_socket::tcp-connect"
                     )]
-                    fn wit_import(_: i32, _: i32, _: i32, _: i32, _: i32, _: i32, _: i32);
+                    fn wit_import(
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                        _: i32,
+                    );
                 }
                 wit_import(
                     ptr0,
@@ -416,6 +440,13 @@ pub mod socket {
                         false => 0,
                     },
                     wit_bindgen_rust::rt::as_i32(connect_timeout_in_ms1),
+                    wit_bindgen_rust::rt::as_i32(keep_alive_timeout_in_ms1),
+                    match reuse_address1 {
+                        true => 1,
+                        false => 0,
+                    },
+                    wit_bindgen_rust::rt::as_i32(send_buffer_size1),
+                    wit_bindgen_rust::rt::as_i32(recv_buffer_size1),
                     ptr3,
                 );
                 match i32::from(*((ptr3 + 0) as *const u8)) {
@@ -686,6 +717,44 @@ pub mod socket {
                         true => 1,
                         false => 0,
                     },
+                    ptr0,
+                );
+                match i32::from(*((ptr0 + 0) as *const u8)) {
+                    0 => Ok(()),
+                    1 => Err(match i32::from(*((ptr0 + 4) as *const u8)) {
+                        0 => Error::ErrorWithDescription({
+                            let len1 = *((ptr0 + 12) as *const i32) as usize;
+
+                            String::from_utf8(Vec::from_raw_parts(
+                                *((ptr0 + 8) as *const i32) as *mut _,
+                                len1,
+                                len1,
+                            ))
+                            .unwrap()
+                        }),
+                        _ => panic!("invalid enum discriminant"),
+                    }),
+                    _ => panic!("invalid enum discriminant"),
+                }
+            }
+        }
+    }
+    impl Socket {
+        pub fn set_keepalive(fd: RawFd, keepalive_in_ms: u32) -> Result<(), Error> {
+            unsafe {
+                let ptr0 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
+                #[link(wasm_import_module = "socket")]
+                extern "C" {
+                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::set-keepalive")]
+                    #[cfg_attr(
+                        not(target_arch = "wasm32"),
+                        link_name = "socket_socket::set-keepalive"
+                    )]
+                    fn wit_import(_: i32, _: i32, _: i32);
+                }
+                wit_import(
+                    wit_bindgen_rust::rt::as_i32(fd),
+                    wit_bindgen_rust::rt::as_i32(keepalive_in_ms),
                     ptr0,
                 );
                 match i32::from(*((ptr0 + 0) as *const u8)) {

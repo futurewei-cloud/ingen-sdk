@@ -12,6 +12,10 @@ record tcp-connect-options {
     local-endpoint: string,
     nonblocking: bool,
     connect-timeout-in-ms: u32,
+    keep-alive-timeout-in-ms: u32,
+    reuse-address: bool,
+    send-buffer-size: u32,
+    recv-buffer-size: u32,
 }
 
 enum shutdown-option {
@@ -37,4 +41,6 @@ resource socket {
 
     static get-nodelay: func(fd: raw-fd) -> expected<bool, error>
     static set-nodelay: func(fd: raw-fd, nodelay: bool) -> expected<unit, error>
+
+    static set-keepalive: func(fd: raw-fd, keepalive-in-ms: u32) -> expected<unit, error>
 }

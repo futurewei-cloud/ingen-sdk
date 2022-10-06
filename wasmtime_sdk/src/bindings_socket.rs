@@ -43,6 +43,10 @@ pub mod socket {
         pub local_endpoint: &'a str,
         pub nonblocking: bool,
         pub connect_timeout_in_ms: u32,
+        pub keep_alive_timeout_in_ms: u32,
+        pub reuse_address: bool,
+        pub send_buffer_size: u32,
+        pub recv_buffer_size: u32,
     }
     impl<'a> core::fmt::Debug for TcpConnectOptions<'a> {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
@@ -50,6 +54,10 @@ pub mod socket {
                 .field("local-endpoint", &self.local_endpoint)
                 .field("nonblocking", &self.nonblocking)
                 .field("connect-timeout-in-ms", &self.connect_timeout_in_ms)
+                .field("keep-alive-timeout-in-ms", &self.keep_alive_timeout_in_ms)
+                .field("reuse-address", &self.reuse_address)
+                .field("send-buffer-size", &self.send_buffer_size)
+                .field("recv-buffer-size", &self.recv_buffer_size)
                 .finish()
         }
     }
@@ -129,6 +137,13 @@ pub mod socket {
             wasi_ctx: &mut wasmtime_wasi::WasiCtx,
             fd: RawFd,
             nodelay: bool,
+        ) -> Result<(), Error>;
+
+        async fn socket_set_keepalive(
+            &mut self,
+            wasi_ctx: &mut wasmtime_wasi::WasiCtx,
+            fd: RawFd,
+            keepalive_in_ms: u32,
         ) -> Result<(), Error>;
 
         fn drop_socket(&mut self, state: Self::Socket) {
@@ -242,7 +257,7 @@ pub mod socket {
                 })
             },
         )?;
-        linker.func_wrap7_async(
+        linker.func_wrap11_async(
             "socket",
             "socket::tcp-connect",
             move |mut caller: wasmtime::Caller<'_, T>,
@@ -252,7 +267,11 @@ pub mod socket {
                   arg3: i32,
                   arg4: i32,
                   arg5: i32,
-                  arg6: i32| {
+                  arg6: i32,
+                  arg7: i32,
+                  arg8: i32,
+                  arg9: i32,
+                  arg10: i32| {
                 Box::new(async move {
                     let func = get_func(&mut caller, "canonical_abi_realloc")?;
                     let func_canonical_abi_realloc =
@@ -275,6 +294,14 @@ pub mod socket {
                             _ => return Err(invalid_variant("bool")),
                         },
                         connect_timeout_in_ms: arg5 as u32,
+                        keep_alive_timeout_in_ms: arg6 as u32,
+                        reuse_address: match arg7 {
+                            0 => false,
+                            1 => true,
+                            _ => return Err(invalid_variant("bool")),
+                        },
+                        send_buffer_size: arg8 as u32,
+                        recv_buffer_size: arg9 as u32,
                     };
                     let result = host.socket_tcp_connect(wasi_ctx, param0, param1).await;
                     match result {
@@ -282,9 +309,9 @@ pub mod socket {
                             let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
                             let (_, _wasi_ctx, _tables) = get(data);
                             caller_memory
-                                .store(arg6 + 0, wit_bindgen_wasmtime::rt::as_i32(0i32) as u8)?;
+                                .store(arg10 + 0, wit_bindgen_wasmtime::rt::as_i32(0i32) as u8)?;
                             caller_memory.store(
-                                arg6 + 4,
+                                arg10 + 4,
                                 wit_bindgen_wasmtime::rt::as_i32(wit_bindgen_wasmtime::rt::as_i32(
                                     e,
                                 )),
@@ -294,11 +321,11 @@ pub mod socket {
                             let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
                             let (_, _wasi_ctx, _tables) = get(data);
                             caller_memory
-                                .store(arg6 + 0, wit_bindgen_wasmtime::rt::as_i32(1i32) as u8)?;
+                                .store(arg10 + 0, wit_bindgen_wasmtime::rt::as_i32(1i32) as u8)?;
                             match e {
                                 Error::ErrorWithDescription(e) => {
                                     caller_memory.store(
-                                        arg6 + 4,
+                                        arg10 + 4,
                                         wit_bindgen_wasmtime::rt::as_i32(0i32) as u8,
                                     )?;
                                     let vec2 = e;
@@ -310,11 +337,11 @@ pub mod socket {
                                     let (_, _wasi_ctx, _tables) = get(data);
                                     caller_memory.store_many(ptr2, vec2.as_bytes())?;
                                     caller_memory.store(
-                                        arg6 + 12,
+                                        arg10 + 12,
                                         wit_bindgen_wasmtime::rt::as_i32(vec2.len() as i32),
                                     )?;
                                     caller_memory
-                                        .store(arg6 + 8, wit_bindgen_wasmtime::rt::as_i32(ptr2))?;
+                                        .store(arg10 + 8, wit_bindgen_wasmtime::rt::as_i32(ptr2))?;
                                 }
                             };
                         }
@@ -707,6 +734,61 @@ pub mod socket {
                         _ => return Err(invalid_variant("bool")),
                     };
                     let result = host.socket_set_nodelay(wasi_ctx, param0, param1).await;
+                    match result {
+                        Ok(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg2 + 0, wit_bindgen_wasmtime::rt::as_i32(0i32) as u8)?;
+                            let () = e;
+                        }
+                        Err(e) => {
+                            let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
+                            let (_, _wasi_ctx, _tables) = get(data);
+                            caller_memory
+                                .store(arg2 + 0, wit_bindgen_wasmtime::rt::as_i32(1i32) as u8)?;
+                            match e {
+                                Error::ErrorWithDescription(e) => {
+                                    caller_memory.store(
+                                        arg2 + 4,
+                                        wit_bindgen_wasmtime::rt::as_i32(0i32) as u8,
+                                    )?;
+                                    let vec0 = e;
+                                    let ptr0 = func_canonical_abi_realloc
+                                        .call_async(&mut caller, (0, 0, 1, vec0.len() as i32))
+                                        .await?;
+                                    let (caller_memory, data) =
+                                        memory.data_and_store_mut(&mut caller);
+                                    let (_, _wasi_ctx, _tables) = get(data);
+                                    caller_memory.store_many(ptr0, vec0.as_bytes())?;
+                                    caller_memory.store(
+                                        arg2 + 12,
+                                        wit_bindgen_wasmtime::rt::as_i32(vec0.len() as i32),
+                                    )?;
+                                    caller_memory
+                                        .store(arg2 + 8, wit_bindgen_wasmtime::rt::as_i32(ptr0))?;
+                                }
+                            };
+                        }
+                    };
+                    Ok(())
+                })
+            },
+        )?;
+        linker.func_wrap3_async(
+            "socket",
+            "socket::set-keepalive",
+            move |mut caller: wasmtime::Caller<'_, T>, arg0: i32, arg1: i32, arg2: i32| {
+                Box::new(async move {
+                    let func = get_func(&mut caller, "canonical_abi_realloc")?;
+                    let func_canonical_abi_realloc =
+                        func.typed::<(i32, i32, i32, i32), i32, _>(&caller)?;
+                    let memory = &get_memory(&mut caller, "memory")?;
+                    let host = get(caller.data_mut());
+                    let (host, wasi_ctx, _tables) = host;
+                    let param0 = arg0;
+                    let param1 = arg1 as u32;
+                    let result = host.socket_set_keepalive(wasi_ctx, param0, param1).await;
                     match result {
                         Ok(e) => {
                             let (caller_memory, data) = memory.data_and_store_mut(&mut caller);
