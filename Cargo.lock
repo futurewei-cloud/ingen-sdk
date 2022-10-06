@@ -371,18 +371,6 @@ dependencies = [
 [[package]]
 name = "mio"
 version = "0.8.4"
-source = "git+https://github.com/futurewei-cloud/mio?branch=wasmdev#d1f791d4ca4cd5af1e90853a3c99a68fd183b832"
-dependencies = [
- "libc",
- "log",
- "merak-evm-agent-wasm-sdk 0.1.0 (git+https://github.com/futurewei-cloud/merak-evm-agent-api-wit?rev=428acafa29e1f35d7a770bdf40ea65ca3f0b83df)",
- "wasi",
- "windows-sys",
-]
-
-[[package]]
-name = "mio"
-version = "0.8.4"
 source = "git+https://github.com/futurewei-cloud/mio?rev=d1f791d4ca4cd5af1e90853a3c99a68fd183b832#d1f791d4ca4cd5af1e90853a3c99a68fd183b832"
 dependencies = [
  "libc",
@@ -401,7 +389,7 @@ dependencies = [
  "env_logger 0.9.1",
  "log",
  "merak-evm-agent-wasm-sdk 0.1.0",
- "mio 0.8.4 (git+https://github.com/futurewei-cloud/mio?branch=wasmdev)",
+ "mio 0.8.4",
 ]
 
 [[package]]
