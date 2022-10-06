@@ -1,0 +1,16 @@
+[package]
+name = "reqwest_simple"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "example_reqwest_simple"
+path = "main.rs"
+
+[dependencies]
+anyhow = "1"
+log = "0.4"
+env_logger = "0.4"
+tokio = { path = "../../../wasm/tokio/tokio", features = ["rt", "sync", "macros", "net", "fs"] }
+reqwest = { path = "../../../wasm/reqwest" }

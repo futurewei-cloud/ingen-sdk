@@ -5,6 +5,7 @@ members = [
     "examples/tokio_tcp_echo",
     "examples/h2_hello_world_server",
     "examples/hyper_html_server",
+    "examples/reqwest_simple",
 ]
 exclude = [
     "wasmtime_sdk"
