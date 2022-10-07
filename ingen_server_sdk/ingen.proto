@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+import "ingen_common.proto";
+
+package ingen;
+
+service Ingen {
+    rpc UpdateVmConfig (UpdateVmConfigRequest) returns (UpdateVmConfigReply);
+    rpc RemoveVm (RemoveVmRequest) returns (RemoveVmReply);
+    rpc GetVmConfig (GetVmConfigRequest) returns (GetVmConfigReply);
+    rpc GetVmStatus (GetVmStatusRequest) returns (GetVmStatusReply);
+}
+
+//
+// UpdateVmConfig:
+//
+
+message UpdateVmConfigRequest {
+    repeated VmConfig vm_configs = 1;
+}
+
+message UpdateVmConfigReply {
+    OpResult result = 1;
+    repeated VmOpResult vm_results = 2;
+}
+
+//
+// RemoveVm:
+//
+
+message RemoveVmRequest {
+    repeated string vm_ids = 1;
+}
+
+message RemoveVmReply {
+    OpResult result = 1;
+    repeated VmOpResult vm_results = 2;
+}
+
+//
+// GetVmConfig:
+//
+
+message GetVmConfigRequest {
+    string vm_id = 1;
+}
+
+message GetVmConfigReply {
+    VmConfig vm_config = 1;
+}
+
+//
+// GetVmStatus:
+//
+
+message GetVmStatusRequest {
+    string vm_id = 1;
+}
+
+message GetVmStatusReply {
+    VmStatus vm_status = 1;
+    repeated VmAgentStatus all_agents_status = 2;
+}

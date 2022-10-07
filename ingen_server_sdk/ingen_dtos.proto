@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+package ingen;
+
+//
+// Protocol common structures
+//
+
+message OpResult {
+     bool ok = 1;
+     uint32 error_code = 2;
+     string message = 3;
+}
+
+message VmOpResult {
+     string vm_id = 1;
+     OpResult result = 2;
+}
+
+
+//
+// Emulated VM common structures
+//
+
+//
+// VM config
+//
+message VmConfig {
+    string vm_id = 1;
+    string config_id = 2;
+    string name = 3;
+    string owner = 4;
+    string role = 5;
+
+    // Compute configs
+    repeated VmAgentConfig agents = 10;
+    repeated VmEnvironmentVariable env_vars = 11;
+
+    // Network configs
+    repeated VmNicConfig nics = 100;
+
+    // Storage configs
+    string vm_data_folder = 200;
+}
+
+message VmEnvironmentVariable {
+     string key = 1;
+     string value = 2;
+}
+
+message VmAgentConfig {
+    // Basic info
+    string name = 1;
+    string image_path = 2;
+
+    // Environments
+    repeated string args = 10;
+    repeated VmEnvironmentVariable env_vars = 11;
+
+    // Stdio
+    string stdin = 20;
+    string stdout_file = 21;
+    string stderr_file = 22;
+
+    // Storage virtualization
+    string data_folder = 30;
+}
+
+message VmNicConfig {
+     // Basic info
+     string id = 1;
+     string mac = 2;
+
+     // IP settings
+     repeated VmIpConfig all_ips = 20;
+}
+
+message VmIpConfig {
+     string private_ip = 1;
+     string routable_ip = 2;
+
+     string vpc_id = 10;
+     string vpc_subnet_id = 11;
+}
+
+//
+// Emulated VM status
+//
+message VmStatus {
+     string id = 1;
+     string role = 2;
+
+     VmState state = 10;
+     string state_details = 11;
+     string config_id = 12;
+
+     uint64 created_time_ms = 50;
+     uint64 last_config_updated_time_ms = 51;
+     uint64 last_state_updated_time_ms = 52;
+     uint64 last_start_completion_time_ms = 53;
+     uint64 cold_start_completion_time_ms = 54;
+}
+
+enum VmState {
+     // Initial states
+     VM_STATE_ALLOCATED = 0;         // VM config is received, but VM is not created or launched
+
+     // Pre-running states
+     VM_STATE_CREATING = 100;        // VM is about to get created, nothing is actually running
+     VM_STATE_STARTING = 150;        // VM is preparing to run, such as deploying agents
+
+     // Running
+     VM_STATE_RUNNING = 500;         // VM is running
+
+     // Stopping states
+     VM_STATE_STOPPING = 1000;       // VM is stopping from running
+     VM_STATE_UNHEALTHY = 1500;      // VM is unhealthy, something is wrong
+
+     // Removing states
+     VM_STATE_REMOVING = 1999;       // VM is going to be removed soon
+     VM_STATE_REMOVED = 2000;        // VM is removed
+}
+
+//
+// Emulated VM agent status
+//
+message VmAgentStatus {
+     string id = 1;
+     string name = 2;
+     VmAgentState state = 3;
+     string state_details = 4;
+
+     uint64 created_time_ms = 10;
+     uint64 last_config_updated_time_ms = 11;
+     uint64 last_state_updated_time_ms = 12;
+}
+
+enum VmAgentState {
+     // Initial states
+     VM_AGENT_STATE_ALLOCATED = 0;                // Agent is not running
+
+     // Pre-running states
+     VM_AGENT_STATE_DEPLOYING = 100;              // Agent is under deployment
+
+     // Running
+     VM_AGENT_STATE_RUNNING = 500;                // Agent is running
+
+     // Stopping states
+     VM_AGENT_STATE_STOPPING = 1000;              // Agent is being stopped, waiting for stopped event to come back
+     VM_AGENT_STATE_STOPPED = 1100;               // Agent is stopped
+     VM_AGENT_STATE_FAILED = 1500;                // Agent is failed, similar as stopped, but failed is caused by unexpected failures
+     VM_AGENT_STATE_FAILED_NON_RETRIABLE = 1501;  // Agent is failed, similar as stopped, but failed is caused by unexpected failures
+
+     // End states
+     VM_AGENT_STATE_RESTARTING = 1900;            // Agent is being removed from the agent map
+     VM_AGENT_STATE_REMOVING = 2000;              // Agent is being removed from the agent map
+}
