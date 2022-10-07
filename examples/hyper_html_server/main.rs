@@ -1,9 +1,8 @@
 #![deny(warnings)]
 
-use std::io::Read;
-
 use hyper::service::{make_service_fn, service_fn};
 use hyper::{Body, Method, Request, Response, Result, Server, StatusCode};
+use std::io::Read;
 
 static INDEX: &str = "/data/agent/examples/hyper_html_server/index.html";
 static NOTFOUND: &[u8] = b"Not Found";
@@ -46,8 +45,6 @@ fn not_found() -> Response<Body> {
 }
 
 async fn simple_file_send(filename: &str) -> Result<Response<Body>> {
-    // Serve a file by asynchronously reading it by chunks using tokio-util crate.
-
     if let Ok(mut file) = std::fs::File::open(filename) {
         let mut content = vec![];
         if let Ok(_) = file.read_to_end(&mut content) {

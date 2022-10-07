@@ -19,4 +19,5 @@ http-body-util = { git = "https://github.com/hyperium/http-body", rev = "6d7dd17
 # tokio = { git = "https://github.com/futurewei-cloud/tokio", branch = "wasmdev", features = ["rt", "sync", "macros", "net", "fs"] }
 # hyper = { git = "https://github.com/futurewei-cloud/hyper", branch = "wasmdev" }
 tokio = { path = "../../../wasm/tokio/tokio", features = ["rt", "sync", "macros", "net", "fs"] }
+tokio-util = { path = "../../../wasm/tokio/tokio-util" }
 hyper = { path = "../../../wasm/hyper", features = ["full"] }

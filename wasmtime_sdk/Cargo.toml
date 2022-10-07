@@ -1,5 +1,5 @@
 [package]
-name = "merak-evm-agent-wasmtime-sdk"
+name = "ingen-wasmtime-sdk"
 version = "0.1.0"
 edition = "2021"
 

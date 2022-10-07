@@ -13,6 +13,6 @@ anyhow = "1"
 log = "0.4"
 env_logger = "0.9"
 bytes = "1.2"
-merak-evm-agent-wasm-sdk = { path = "../../wasm_sdk" }
+ingen-wasm-sdk = { path = "../../wasm_sdk" }
 # mio = { git = "https://github.com/futurewei-cloud/mio", branch = "wasmdev", features = ["net", "os-poll"] }
 mio = { path = "../../../wasm/mio", features = ["net", "os-poll"] }

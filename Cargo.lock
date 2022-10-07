@@ -320,8 +320,8 @@ dependencies = [
  "http-body 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "httparse",
  "httpdate",
+ "ingen-wasm-sdk",
  "itoa",
- "merak-evm-agent-wasm-sdk 0.1.0",
  "pin-project-lite",
  "tokio 1.21.2",
  "tower-service",
@@ -342,6 +342,7 @@ dependencies = [
  "log 0.4.17",
  "pretty_env_logger",
  "tokio 1.21.2",
+ "tokio-util",
 ]
 
 [[package]]
@@ -368,6 +369,15 @@ checksum = "10a35a97730320ffe8e2d410b5d3b69279b98d2c14bdb8b70ea89ecf7888d41e"
 dependencies = [
  "autocfg",
  "hashbrown",
+]
+
+[[package]]
+name = "ingen-wasm-sdk"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "wit-bindgen-rust",
+ "wit-error-rs",
 ]
 
 [[package]]
@@ -430,15 +440,6 @@ checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
 [[package]]
 name = "merak-evm-agent-wasm-sdk"
 version = "0.1.0"
-dependencies = [
- "anyhow",
- "wit-bindgen-rust",
- "wit-error-rs",
-]
-
-[[package]]
-name = "merak-evm-agent-wasm-sdk"
-version = "0.1.0"
 source = "git+https://github.com/futurewei-cloud/merak-evm-agent-api-wit?rev=428acafa29e1f35d7a770bdf40ea65ca3f0b83df#428acafa29e1f35d7a770bdf40ea65ca3f0b83df"
 dependencies = [
  "anyhow",
@@ -456,9 +457,9 @@ checksum = "2a60c7ce501c71e03a9c9c0d35b861413ae925bd979cc7a4e30d060069aaac8d"
 name = "mio"
 version = "0.8.4"
 dependencies = [
+ "ingen-wasm-sdk",
  "libc",
  "log 0.4.17",
- "merak-evm-agent-wasm-sdk 0.1.0",
  "wasi",
  "windows-sys",
 ]
@@ -470,7 +471,7 @@ source = "git+https://github.com/futurewei-cloud/mio?rev=d1f791d4ca4cd5af1e90853
 dependencies = [
  "libc",
  "log 0.4.17",
- "merak-evm-agent-wasm-sdk 0.1.0 (git+https://github.com/futurewei-cloud/merak-evm-agent-api-wit?rev=428acafa29e1f35d7a770bdf40ea65ca3f0b83df)",
+ "merak-evm-agent-wasm-sdk",
  "wasi",
  "windows-sys",
 ]
@@ -482,8 +483,8 @@ dependencies = [
  "anyhow",
  "bytes",
  "env_logger 0.9.1",
+ "ingen-wasm-sdk",
  "log 0.4.17",
- "merak-evm-agent-wasm-sdk 0.1.0",
  "mio 0.8.4",
 ]
 
