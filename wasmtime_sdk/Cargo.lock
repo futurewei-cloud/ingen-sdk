@@ -235,8 +235,7 @@ dependencies = [
 [[package]]
 name = "cranelift-bforest"
 version = "0.86.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "529ffacce2249ac60edba2941672dfedf3d96558b415d0d8083cd007456e0f55"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "cranelift-entity",
 ]
@@ -244,8 +243,7 @@ dependencies = [
 [[package]]
 name = "cranelift-codegen"
 version = "0.86.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "427d105f617efc8cb55f8d036a7fded2e227892d8780b4985e5551f8d27c4a92"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "cranelift-bforest",
  "cranelift-codegen-meta",
@@ -262,8 +260,7 @@ dependencies = [
 [[package]]
 name = "cranelift-codegen-meta"
 version = "0.86.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "551674bed85b838d45358e3eab4f0ffaa6790c70dc08184204b9a54b41cdb7d1"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "cranelift-codegen-shared",
 ]
@@ -271,14 +268,12 @@ dependencies = [
 [[package]]
 name = "cranelift-codegen-shared"
 version = "0.86.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b3a63ae57498c3eb495360944a33571754241e15e47e3bcae6082f40fec5866"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 
 [[package]]
 name = "cranelift-entity"
 version = "0.86.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "11aa8aa624c72cc1c94ea3d0739fa61248260b5b14d3646f51593a88d67f3e6e"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "serde",
 ]
@@ -286,8 +281,7 @@ dependencies = [
 [[package]]
 name = "cranelift-frontend"
 version = "0.86.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "544ee8f4d1c9559c9aa6d46e7aaeac4a13856d620561094f35527356c7d21bd0"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "cranelift-codegen",
  "log",
@@ -298,14 +292,12 @@ dependencies = [
 [[package]]
 name = "cranelift-isle"
 version = "0.86.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed16b14363d929b8c37e3c557d0a7396791b383ecc302141643c054343170aad"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 
 [[package]]
 name = "cranelift-native"
 version = "0.86.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51617cf8744634f2ed3c989c3c40cd6444f63377c6d994adab0d85807f3eb682"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "cranelift-codegen",
  "libc",
@@ -315,8 +307,7 @@ dependencies = [
 [[package]]
 name = "cranelift-wasm"
 version = "0.86.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5a8073a41efc173fd19bad3f725c170c705df6da999fc47a738ff310225dd63"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "cranelift-codegen",
  "cranelift-entity",
@@ -610,6 +601,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "ingen-wasmtime-sdk"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "wasi-common",
+ "wasmtime",
+ "wasmtime-wasi",
+ "wit-bindgen-wasmtime",
+ "wit-error-rs",
+]
+
+[[package]]
 name = "io-extras"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -750,18 +753,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
 dependencies = [
  "autocfg",
-]
-
-[[package]]
-name = "ingen-wasmtime-sdk"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "wasi-common",
- "wasmtime",
- "wasmtime-wasi",
- "wit-bindgen-wasmtime",
- "wit-error-rs",
 ]
 
 [[package]]
@@ -1302,8 +1293,7 @@ checksum = "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423"
 [[package]]
 name = "wasi-cap-std-sync"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "88ec937bd9bb960475991083c97819c6b6b953e433a0240f110d64b88f8fa516"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1326,8 +1316,7 @@ dependencies = [
 [[package]]
 name = "wasi-common"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "44d94ceb7894bb90a4793e997a21096c76b17a9fa354d29b7ff78fec9c7fabc7"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "bitflags",
@@ -1344,8 +1333,7 @@ dependencies = [
 [[package]]
 name = "wasi-tokio"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ab325bba31ae9286b8ebdc18d32a43d6471312c9bc4e477240be444e00ec4f4"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "cap-std",
@@ -1380,8 +1368,7 @@ dependencies = [
 [[package]]
 name = "wasmtime"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d10a6853d64e99fffdae80f93a45080475c9267f87743060814dc1186d74618"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1414,8 +1401,7 @@ dependencies = [
 [[package]]
 name = "wasmtime-cache"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0617b2f4c897b6a89b9d143466f3c724b9a36c6eabc443bf463f4e1ad48a2ccd"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "base64",
@@ -1434,8 +1420,7 @@ dependencies = [
 [[package]]
 name = "wasmtime-cranelift"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3302b33d919e8e33f1717d592c10c3cddccb318d0e1e0bef75178f579686ba94"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "cranelift-codegen",
@@ -1456,8 +1441,7 @@ dependencies = [
 [[package]]
 name = "wasmtime-environ"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c50fb925e8eaa9f8431f9b784ea89a13c703cb445ddfe51cb437596fc34e734"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "cranelift-entity",
@@ -1476,8 +1460,7 @@ dependencies = [
 [[package]]
 name = "wasmtime-fiber"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f6aba0b317746e8213d1f36a4c51974e66e69c1f05bfc09ed29b4d4bda290eb"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "cc",
  "cfg-if",
@@ -1488,8 +1471,7 @@ dependencies = [
 [[package]]
 name = "wasmtime-jit"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cad81635f33ab69aa04b386c9d954aef9f6230059f66caf67e55fb65bfd2f3e0"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "addr2line",
  "anyhow",
@@ -1515,8 +1497,7 @@ dependencies = [
 [[package]]
 name = "wasmtime-jit-debug"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "55e23273fddce8cab149a0743c46932bf4910268641397ed86b46854b089f38f"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "lazy_static",
  "object 0.28.4",
@@ -1526,8 +1507,7 @@ dependencies = [
 [[package]]
 name = "wasmtime-runtime"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "36b8aafb292502d28dc2d25f44d4a81e229bb2e0cc14ca847dde4448a1a62ae4"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "backtrace",
@@ -1553,8 +1533,7 @@ dependencies = [
 [[package]]
 name = "wasmtime-types"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd7edc34f358fc290d12e326de81884422cb94cf74cc305b27979569875332d6"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "cranelift-entity",
  "serde",
@@ -1565,8 +1544,7 @@ dependencies = [
 [[package]]
 name = "wasmtime-wasi"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "93e02ac8bc6ab1b278bbaceacdab34c65d47cf71068e077d85eb0070a5082401"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "wasi-cap-std-sync",
@@ -1609,8 +1587,7 @@ dependencies = [
 [[package]]
 name = "wiggle"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9b3b67b2d53a0a2f050f9864e38048051545f45b0de447f4942b8606d938267b"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1625,8 +1602,7 @@ dependencies = [
 [[package]]
 name = "wiggle-generate"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bac464f2b8b4202b4d99cf6693a734e9dbb811e6e5cd4ec541ecca008d9a4a34"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "heck 0.4.0",
@@ -1640,8 +1616,7 @@ dependencies = [
 [[package]]
 name = "wiggle-macro"
 version = "0.39.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "94d509122879d42f641d49feb7c43dbdfc38aa34dba5b53e925f87398e740da5"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1737,7 +1712,7 @@ dependencies = [
 [[package]]
 name = "wit-bindgen-gen-core"
 version = "0.2.0"
-source = "git+https://github.com/r12f/wit-bindgen?rev=7899ffbf544f543afc6c03d93338581d230c662a#7899ffbf544f543afc6c03d93338581d230c662a"
+source = "git+https://github.com/r12f/wit-bindgen?rev=1e277342523a40aff0845ee6f0a9b3bddb979dba#1e277342523a40aff0845ee6f0a9b3bddb979dba"
 dependencies = [
  "anyhow",
  "wit-parser",
@@ -1746,7 +1721,7 @@ dependencies = [
 [[package]]
 name = "wit-bindgen-gen-rust"
 version = "0.2.0"
-source = "git+https://github.com/r12f/wit-bindgen?rev=7899ffbf544f543afc6c03d93338581d230c662a#7899ffbf544f543afc6c03d93338581d230c662a"
+source = "git+https://github.com/r12f/wit-bindgen?rev=1e277342523a40aff0845ee6f0a9b3bddb979dba#1e277342523a40aff0845ee6f0a9b3bddb979dba"
 dependencies = [
  "heck 0.3.3",
  "wit-bindgen-gen-core",
@@ -1755,7 +1730,7 @@ dependencies = [
 [[package]]
 name = "wit-bindgen-gen-wasmtime"
 version = "0.2.0"
-source = "git+https://github.com/r12f/wit-bindgen?rev=7899ffbf544f543afc6c03d93338581d230c662a#7899ffbf544f543afc6c03d93338581d230c662a"
+source = "git+https://github.com/r12f/wit-bindgen?rev=1e277342523a40aff0845ee6f0a9b3bddb979dba#1e277342523a40aff0845ee6f0a9b3bddb979dba"
 dependencies = [
  "heck 0.3.3",
  "wit-bindgen-gen-core",
@@ -1765,7 +1740,7 @@ dependencies = [
 [[package]]
 name = "wit-bindgen-wasmtime"
 version = "0.2.0"
-source = "git+https://github.com/r12f/wit-bindgen?rev=7899ffbf544f543afc6c03d93338581d230c662a#7899ffbf544f543afc6c03d93338581d230c662a"
+source = "git+https://github.com/r12f/wit-bindgen?rev=1e277342523a40aff0845ee6f0a9b3bddb979dba#1e277342523a40aff0845ee6f0a9b3bddb979dba"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1778,7 +1753,7 @@ dependencies = [
 [[package]]
 name = "wit-bindgen-wasmtime-impl"
 version = "0.2.0"
-source = "git+https://github.com/r12f/wit-bindgen?rev=7899ffbf544f543afc6c03d93338581d230c662a#7899ffbf544f543afc6c03d93338581d230c662a"
+source = "git+https://github.com/r12f/wit-bindgen?rev=1e277342523a40aff0845ee6f0a9b3bddb979dba#1e277342523a40aff0845ee6f0a9b3bddb979dba"
 dependencies = [
  "proc-macro2",
  "syn",
@@ -1798,7 +1773,7 @@ dependencies = [
 [[package]]
 name = "wit-parser"
 version = "0.2.0"
-source = "git+https://github.com/r12f/wit-bindgen?rev=7899ffbf544f543afc6c03d93338581d230c662a#7899ffbf544f543afc6c03d93338581d230c662a"
+source = "git+https://github.com/r12f/wit-bindgen?rev=1e277342523a40aff0845ee6f0a9b3bddb979dba#1e277342523a40aff0845ee6f0a9b3bddb979dba"
 dependencies = [
  "anyhow",
  "id-arena",
@@ -1810,8 +1785,7 @@ dependencies = [
 [[package]]
 name = "witx"
 version = "0.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e366f27a5cabcddb2706a78296a40b8fcc451e1a6aba2fc1d94b4a01bdaaef4b"
+source = "git+https://github.com/futurewei-cloud/wasmtime?branch=release-0.39.0#f5c9e94446f7331b9da5837abfd33e8c45e4a95a"
 dependencies = [
  "anyhow",
  "log",

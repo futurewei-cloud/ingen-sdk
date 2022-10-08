@@ -5,8 +5,8 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1"
-wit-bindgen-wasmtime = { git = "https://github.com/r12f/wit-bindgen", rev = "7899ffbf544f543afc6c03d93338581d230c662a", features = ["async"] }
+wit-bindgen-wasmtime = { git = "https://github.com/r12f/wit-bindgen", rev = "1e277342523a40aff0845ee6f0a9b3bddb979dba", features = ["async"] }
 wit-error-rs = { git = "https://github.com/danbugs/wit-error-rs", rev = "05362f1a4a3a9dc6a1de39195e06d2d5d6491a5e" }
-wasmtime = "0.39"
-wasmtime-wasi = { version = "0.39", features = ["tokio"] }
-wasi-common = "0.39"
+wasmtime = { git = "https://github.com/futurewei-cloud/wasmtime", branch = "release-0.39.0" }
+wasmtime-wasi = { git = "https://github.com/futurewei-cloud/wasmtime", branch = "release-0.39.0", features = ["tokio"] }
+wasi-common = { git = "https://github.com/futurewei-cloud/wasmtime", branch = "release-0.39.0" }
