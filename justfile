@@ -12,7 +12,7 @@ default: format build lint
 # Init task: Installing build tools and etc
 #
 init:
-    cargo install --git https://github.com/r12f/wit-bindgen wit-bindgen-cli --rev 7899ffbf544f543afc6c03d93338581d230c662a
+    cargo install --git https://github.com/r12f/wit-bindgen wit-bindgen-cli --branch main
 
 #
 # SDK generation task:
@@ -50,6 +50,3 @@ lint:
 
 lint-fix:
     cargo clippy --all-targets --all-features --fix --allow-dirty
-
-run EXAMPLE *ARGS:
-    RUST_BACKTRACE=full RUST_LOG="warn,evm_runner=info" ingen-ah ./target/wasm32-wasi/{{BUILD_FLAVOR}}/example_{{EXAMPLE}}.wasm --env "RUST_LOG=trace" --env "RUST_BACKTRACE=full" {{ARGS}}
