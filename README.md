@@ -10,7 +10,7 @@ To help our users to use Ingen, we provides 2 SDKs for integrations:
 
 Although [WASM-WASI has wide range of language support](https://www.fermyon.com/wasm-languages/webassembly-language-support), however there are few functionalities missing, for example - certain socket APIs, such as raw socket for ICMP ping, TCP connect / bind, setting socket options and etc. This SDK provides low level capability to help everyone writing programs.
 
-## How to use?
+## How to use
 
 For most of the users, we don't need to use this SDK directly, as we extended the WASI APIs and have also ported a list of widely used libs (below), so we can directly update the .toml file to points to these ported libs. Then the program can be compiled into WASM with very minor code changes and run in our environment.
 
@@ -37,7 +37,7 @@ To include the `.proto` files in your repo, we can add this repo as submodule an
 
 # Development
 
-## How to update wit?
+## How to update wit
 
 ### One-time initialization
 
