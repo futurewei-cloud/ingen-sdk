@@ -19,7 +19,7 @@ message VmOpResult {
 
 
 //
-// Emulated VM common structures
+// EPM common data structures
 //
 
 //
@@ -57,13 +57,11 @@ message VmAgentConfig {
     repeated string args = 10;
     repeated VmEnvironmentVariable env_vars = 11;
 
-    // Stdio
-    string stdin = 20;
-    string stdout_file = 21;
-    string stderr_file = 22;
-
-    // Storage virtualization
-    string data_folder = 30;
+    // stdio
+    string data_folder = 20;
+    string stdin = 21;
+    string stdout_file = 22;
+    string stderr_file = 23;
 }
 
 message VmNicConfig {
@@ -84,7 +82,7 @@ message VmIpConfig {
 }
 
 //
-// Emulated VM status
+// VM status
 //
 message VmStatus {
      string id = 1;
@@ -99,6 +97,17 @@ message VmStatus {
      uint64 last_state_updated_time_ms = 52;
      uint64 last_start_completion_time_ms = 53;
      uint64 cold_start_completion_time_ms = 54;
+}
+
+message VmAgentStatus {
+     string id = 1;
+     string name = 2;
+     VmAgentState state = 3;
+     string state_details = 4;
+
+     uint64 created_time_ms = 10;
+     uint64 last_config_updated_time_ms = 11;
+     uint64 last_state_updated_time_ms = 12;
 }
 
 enum VmState {
@@ -119,20 +128,6 @@ enum VmState {
      // Removing states
      VM_STATE_REMOVING = 1999;       // VM is going to be removed soon
      VM_STATE_REMOVED = 2000;        // VM is removed
-}
-
-//
-// Emulated VM agent status
-//
-message VmAgentStatus {
-     string id = 1;
-     string name = 2;
-     VmAgentState state = 3;
-     string state_details = 4;
-
-     uint64 created_time_ms = 10;
-     uint64 last_config_updated_time_ms = 11;
-     uint64 last_state_updated_time_ms = 12;
 }
 
 enum VmAgentState {
