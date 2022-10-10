@@ -33,7 +33,7 @@ message VmConfig {
     string role = 5;
 
     // Compute configs
-    repeated VmAgentConfig agents = 10;
+    repeated GuestProcessConfig processes = 10;
     repeated VmEnvironmentVariable env_vars = 11;
 
     // Network configs
@@ -48,7 +48,7 @@ message VmEnvironmentVariable {
      string value = 2;
 }
 
-message VmAgentConfig {
+message GuestProcessConfig {
     // Basic info
     string name = 1;
     string image_path = 2;
@@ -99,10 +99,10 @@ message VmStatus {
      uint64 cold_start_completion_time_ms = 54;
 }
 
-message VmAgentStatus {
+message GuestProcessStatus {
      string id = 1;
      string name = 2;
-     VmAgentState state = 3;
+     GuestProcessState state = 3;
      string state_details = 4;
 
      uint64 created_time_ms = 10;
@@ -116,7 +116,7 @@ enum VmState {
 
      // Pre-running states
      VM_STATE_CREATING = 100;        // VM is about to get created, nothing is actually running
-     VM_STATE_STARTING = 150;        // VM is preparing to run, such as deploying agents
+     VM_STATE_STARTING = 150;        // VM is preparing to run, such as deploying processes
 
      // Running
      VM_STATE_RUNNING = 500;         // VM is running
@@ -130,23 +130,23 @@ enum VmState {
      VM_STATE_REMOVED = 2000;        // VM is removed
 }
 
-enum VmAgentState {
+enum GuestProcessState {
      // Initial states
-     VM_AGENT_STATE_ALLOCATED = 0;                // Agent is not running
+     GUEST_PROCESS_STATE_ALLOCATED = 0;                // Process is not running
 
      // Pre-running states
-     VM_AGENT_STATE_DEPLOYING = 100;              // Agent is under deployment
+     GUEST_PROCESS_STATE_DEPLOYING = 100;              // Process is under deployment
 
      // Running
-     VM_AGENT_STATE_RUNNING = 500;                // Agent is running
+     GUEST_PROCESS_STATE_RUNNING = 500;                // Process is running
 
      // Stopping states
-     VM_AGENT_STATE_STOPPING = 1000;              // Agent is being stopped, waiting for stopped event to come back
-     VM_AGENT_STATE_STOPPED = 1100;               // Agent is stopped
-     VM_AGENT_STATE_FAILED = 1500;                // Agent is failed, similar as stopped, but failed is caused by unexpected failures
-     VM_AGENT_STATE_FAILED_NON_RETRIABLE = 1501;  // Agent is failed, similar as stopped, but failed is caused by unexpected failures
+     GUEST_PROCESS_STATE_STOPPING = 1000;              // Process is being stopped, waiting for stopped event to come back
+     GUEST_PROCESS_STATE_STOPPED = 1100;               // Process is stopped
+     GUEST_PROCESS_STATE_FAILED = 1500;                // Process is failed, similar as stopped, but failed is caused by unexpected failures
+     GUEST_PROCESS_STATE_FAILED_NON_RETRIABLE = 1501;  // Process is failed, similar as stopped, but failed is caused by unexpected failures
 
      // End states
-     VM_AGENT_STATE_RESTARTING = 1900;            // Agent is being removed from the agent map
-     VM_AGENT_STATE_REMOVING = 2000;              // Agent is being removed from the agent map
+     GUEST_PROCESS_STATE_RESTARTING = 1900;            // Process is being removed from the process map
+     GUEST_PROCESS_STATE_REMOVING = 2000;              // Process is being removed from the process map
 }
