@@ -9,10 +9,7 @@ pub mod icmp {
     impl core::fmt::Debug for Error {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
             match self {
-                Error::ErrorWithDescription(e) => f
-                    .debug_tuple("Error::ErrorWithDescription")
-                    .field(e)
-                    .finish(),
+                Error::ErrorWithDescription(e) => f.debug_tuple("Error::ErrorWithDescription").field(e).finish(),
             }
         }
     }
@@ -125,12 +122,8 @@ pub mod icmp {
                         0 => Error::ErrorWithDescription({
                             let len4 = *((ptr1 + 16) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr1 + 12) as *const i32) as *mut _,
-                                len4,
-                                len4,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr1 + 12) as *const i32) as *mut _, len4, len4))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -158,10 +151,7 @@ pub mod icmp {
                 #[link(wasm_import_module = "icmp")]
                 extern "C" {
                     #[cfg_attr(target_arch = "wasm32", link_name = "icmp::ping-with-options")]
-                    #[cfg_attr(
-                        not(target_arch = "wasm32"),
-                        link_name = "icmp_icmp::ping-with-options"
-                    )]
+                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "icmp_icmp::ping-with-options")]
                     fn wit_import(_: i32, _: i32, _: i32, _: i32, _: i32, _: i32, _: i32, _: i32);
                 }
                 wit_import(
@@ -204,12 +194,8 @@ pub mod icmp {
                         0 => Error::ErrorWithDescription({
                             let len5 = *((ptr2 + 16) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr2 + 12) as *const i32) as *mut _,
-                                len5,
-                                len5,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr2 + 12) as *const i32) as *mut _, len5, len5))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -232,10 +218,7 @@ pub mod socket {
     impl core::fmt::Debug for Error {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
             match self {
-                Error::ErrorWithDescription(e) => f
-                    .debug_tuple("Error::ErrorWithDescription")
-                    .field(e)
-                    .finish(),
+                Error::ErrorWithDescription(e) => f.debug_tuple("Error::ErrorWithDescription").field(e).finish(),
             }
         }
     }
@@ -341,11 +324,8 @@ pub mod socket {
                 let vec0 = endpoint;
                 let ptr0 = vec0.as_ptr() as i32;
                 let len0 = vec0.len() as i32;
-                let TcpBindOptions {
-                    backlog: backlog1,
-                    nonblocking: nonblocking1,
-                    reuse_address: reuse_address1,
-                } = options;
+                let TcpBindOptions { backlog: backlog1, nonblocking: nonblocking1, reuse_address: reuse_address1 } =
+                    options;
                 let ptr2 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
                 #[link(wasm_import_module = "socket")]
                 extern "C" {
@@ -373,12 +353,8 @@ pub mod socket {
                         0 => Error::ErrorWithDescription({
                             let len3 = *((ptr2 + 12) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr2 + 8) as *const i32) as *mut _,
-                                len3,
-                                len3,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr2 + 8) as *const i32) as *mut _, len3, len3))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -388,10 +364,7 @@ pub mod socket {
         }
     }
     impl Socket {
-        pub fn tcp_connect(
-            remote_endpoint: &str,
-            options: TcpConnectOptions<'_>,
-        ) -> Result<RawFd, Error> {
+        pub fn tcp_connect(remote_endpoint: &str, options: TcpConnectOptions<'_>) -> Result<RawFd, Error> {
             unsafe {
                 let vec0 = remote_endpoint;
                 let ptr0 = vec0.as_ptr() as i32;
@@ -412,10 +385,7 @@ pub mod socket {
                 #[link(wasm_import_module = "socket")]
                 extern "C" {
                     #[cfg_attr(target_arch = "wasm32", link_name = "socket::tcp-connect")]
-                    #[cfg_attr(
-                        not(target_arch = "wasm32"),
-                        link_name = "socket_socket::tcp-connect"
-                    )]
+                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::tcp-connect")]
                     fn wit_import(
                         _: i32,
                         _: i32,
@@ -455,12 +425,8 @@ pub mod socket {
                         0 => Error::ErrorWithDescription({
                             let len4 = *((ptr3 + 12) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr3 + 8) as *const i32) as *mut _,
-                                len4,
-                                len4,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr3 + 8) as *const i32) as *mut _, len4, len4))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -494,12 +460,8 @@ pub mod socket {
                         0 => Error::ErrorWithDescription({
                             let len1 = *((ptr0 + 12) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr0 + 8) as *const i32) as *mut _, len1, len1))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -515,10 +477,7 @@ pub mod socket {
                 #[link(wasm_import_module = "socket")]
                 extern "C" {
                     #[cfg_attr(target_arch = "wasm32", link_name = "socket::get-local-addr")]
-                    #[cfg_attr(
-                        not(target_arch = "wasm32"),
-                        link_name = "socket_socket::get-local-addr"
-                    )]
+                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::get-local-addr")]
                     fn wit_import(_: i32, _: i32);
                 }
                 wit_import(wit_bindgen_rust::rt::as_i32(fd), ptr0);
@@ -526,23 +485,15 @@ pub mod socket {
                     0 => Ok({
                         let len1 = *((ptr0 + 8) as *const i32) as usize;
 
-                        String::from_utf8(Vec::from_raw_parts(
-                            *((ptr0 + 4) as *const i32) as *mut _,
-                            len1,
-                            len1,
-                        ))
-                        .unwrap()
+                        String::from_utf8(Vec::from_raw_parts(*((ptr0 + 4) as *const i32) as *mut _, len1, len1))
+                            .unwrap()
                     }),
                     1 => Err(match i32::from(*((ptr0 + 4) as *const u8)) {
                         0 => Error::ErrorWithDescription({
                             let len2 = *((ptr0 + 12) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len2,
-                                len2,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr0 + 8) as *const i32) as *mut _, len2, len2))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -558,10 +509,7 @@ pub mod socket {
                 #[link(wasm_import_module = "socket")]
                 extern "C" {
                     #[cfg_attr(target_arch = "wasm32", link_name = "socket::get-peer-addr")]
-                    #[cfg_attr(
-                        not(target_arch = "wasm32"),
-                        link_name = "socket_socket::get-peer-addr"
-                    )]
+                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::get-peer-addr")]
                     fn wit_import(_: i32, _: i32);
                 }
                 wit_import(wit_bindgen_rust::rt::as_i32(fd), ptr0);
@@ -569,23 +517,15 @@ pub mod socket {
                     0 => Ok({
                         let len1 = *((ptr0 + 8) as *const i32) as usize;
 
-                        String::from_utf8(Vec::from_raw_parts(
-                            *((ptr0 + 4) as *const i32) as *mut _,
-                            len1,
-                            len1,
-                        ))
-                        .unwrap()
+                        String::from_utf8(Vec::from_raw_parts(*((ptr0 + 4) as *const i32) as *mut _, len1, len1))
+                            .unwrap()
                     }),
                     1 => Err(match i32::from(*((ptr0 + 4) as *const u8)) {
                         0 => Error::ErrorWithDescription({
                             let len2 = *((ptr0 + 12) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len2,
-                                len2,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr0 + 8) as *const i32) as *mut _, len2, len2))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -611,12 +551,8 @@ pub mod socket {
                         0 => Error::ErrorWithDescription({
                             let len1 = *((ptr0 + 12) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr0 + 8) as *const i32) as *mut _, len1, len1))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -635,23 +571,15 @@ pub mod socket {
                     #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::set-ttl")]
                     fn wit_import(_: i32, _: i32, _: i32);
                 }
-                wit_import(
-                    wit_bindgen_rust::rt::as_i32(fd),
-                    wit_bindgen_rust::rt::as_i32(ttl),
-                    ptr0,
-                );
+                wit_import(wit_bindgen_rust::rt::as_i32(fd), wit_bindgen_rust::rt::as_i32(ttl), ptr0);
                 match i32::from(*((ptr0 + 0) as *const u8)) {
                     0 => Ok(()),
                     1 => Err(match i32::from(*((ptr0 + 4) as *const u8)) {
                         0 => Error::ErrorWithDescription({
                             let len1 = *((ptr0 + 12) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr0 + 8) as *const i32) as *mut _, len1, len1))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -667,10 +595,7 @@ pub mod socket {
                 #[link(wasm_import_module = "socket")]
                 extern "C" {
                     #[cfg_attr(target_arch = "wasm32", link_name = "socket::get-nodelay")]
-                    #[cfg_attr(
-                        not(target_arch = "wasm32"),
-                        link_name = "socket_socket::get-nodelay"
-                    )]
+                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::get-nodelay")]
                     fn wit_import(_: i32, _: i32);
                 }
                 wit_import(wit_bindgen_rust::rt::as_i32(fd), ptr0);
@@ -684,12 +609,8 @@ pub mod socket {
                         0 => Error::ErrorWithDescription({
                             let len1 = *((ptr0 + 12) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr0 + 8) as *const i32) as *mut _, len1, len1))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -705,10 +626,7 @@ pub mod socket {
                 #[link(wasm_import_module = "socket")]
                 extern "C" {
                     #[cfg_attr(target_arch = "wasm32", link_name = "socket::set-nodelay")]
-                    #[cfg_attr(
-                        not(target_arch = "wasm32"),
-                        link_name = "socket_socket::set-nodelay"
-                    )]
+                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::set-nodelay")]
                     fn wit_import(_: i32, _: i32, _: i32);
                 }
                 wit_import(
@@ -725,12 +643,8 @@ pub mod socket {
                         0 => Error::ErrorWithDescription({
                             let len1 = *((ptr0 + 12) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr0 + 8) as *const i32) as *mut _, len1, len1))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),
@@ -746,29 +660,73 @@ pub mod socket {
                 #[link(wasm_import_module = "socket")]
                 extern "C" {
                     #[cfg_attr(target_arch = "wasm32", link_name = "socket::set-keepalive")]
-                    #[cfg_attr(
-                        not(target_arch = "wasm32"),
-                        link_name = "socket_socket::set-keepalive"
-                    )]
+                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::set-keepalive")]
                     fn wit_import(_: i32, _: i32, _: i32);
                 }
-                wit_import(
-                    wit_bindgen_rust::rt::as_i32(fd),
-                    wit_bindgen_rust::rt::as_i32(keepalive_in_ms),
-                    ptr0,
-                );
+                wit_import(wit_bindgen_rust::rt::as_i32(fd), wit_bindgen_rust::rt::as_i32(keepalive_in_ms), ptr0);
                 match i32::from(*((ptr0 + 0) as *const u8)) {
                     0 => Ok(()),
                     1 => Err(match i32::from(*((ptr0 + 4) as *const u8)) {
                         0 => Error::ErrorWithDescription({
                             let len1 = *((ptr0 + 12) as *const i32) as usize;
 
-                            String::from_utf8(Vec::from_raw_parts(
-                                *((ptr0 + 8) as *const i32) as *mut _,
-                                len1,
-                                len1,
-                            ))
-                            .unwrap()
+                            String::from_utf8(Vec::from_raw_parts(*((ptr0 + 8) as *const i32) as *mut _, len1, len1))
+                                .unwrap()
+                        }),
+                        _ => panic!("invalid enum discriminant"),
+                    }),
+                    _ => panic!("invalid enum discriminant"),
+                }
+            }
+        }
+    }
+    impl Socket {
+        pub fn nslookup(domain_name: &str) -> Result<Vec<String>, Error> {
+            unsafe {
+                let vec0 = domain_name;
+                let ptr0 = vec0.as_ptr() as i32;
+                let len0 = vec0.len() as i32;
+                let ptr1 = __SOCKET_RET_AREA.0.as_mut_ptr() as i32;
+                #[link(wasm_import_module = "socket")]
+                extern "C" {
+                    #[cfg_attr(target_arch = "wasm32", link_name = "socket::nslookup")]
+                    #[cfg_attr(not(target_arch = "wasm32"), link_name = "socket_socket::nslookup")]
+                    fn wit_import(_: i32, _: i32, _: i32);
+                }
+                wit_import(ptr0, len0, ptr1);
+                match i32::from(*((ptr1 + 0) as *const u8)) {
+                    0 => Ok({
+                        let base3 = *((ptr1 + 4) as *const i32);
+                        let len3 = *((ptr1 + 8) as *const i32);
+                        let mut result3 = Vec::with_capacity(len3 as usize);
+                        for i in 0..len3 {
+                            let base = base3 + i * 8;
+                            result3.push({
+                                let len2 = *((base + 4) as *const i32) as usize;
+
+                                String::from_utf8(Vec::from_raw_parts(
+                                    *((base + 0) as *const i32) as *mut _,
+                                    len2,
+                                    len2,
+                                ))
+                                .unwrap()
+                            });
+                        }
+                        if len3 != 0 {
+                            std::alloc::dealloc(
+                                base3 as *mut _,
+                                std::alloc::Layout::from_size_align_unchecked((len3 as usize) * 8, 4),
+                            );
+                        }
+
+                        result3
+                    }),
+                    1 => Err(match i32::from(*((ptr1 + 4) as *const u8)) {
+                        0 => Error::ErrorWithDescription({
+                            let len4 = *((ptr1 + 12) as *const i32) as usize;
+
+                            String::from_utf8(Vec::from_raw_parts(*((ptr1 + 8) as *const i32) as *mut _, len4, len4))
+                                .unwrap()
                         }),
                         _ => panic!("invalid enum discriminant"),
                     }),

@@ -43,4 +43,7 @@ resource socket {
     static set-nodelay: func(fd: raw-fd, nodelay: bool) -> expected<unit, error>
 
     static set-keepalive: func(fd: raw-fd, keepalive-in-ms: u32) -> expected<unit, error>
+
+    // dns
+    static nslookup: func(domain-name: string) -> expected<list<string>, error>
 }
