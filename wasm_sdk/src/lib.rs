@@ -1,8 +1,10 @@
 #![allow(dead_code)]
 
 mod bindings;
+mod egp_env;
 
 pub use bindings::*;
+pub use egp_env::*;
 
 // Before `*.world` is supported, the Error type will be generated for each host components, and cannot be resolved to a common one.
 // The world proposal is currently tracked by https://github.com/WebAssembly/component-model/pull/83. After `world` is supported,
