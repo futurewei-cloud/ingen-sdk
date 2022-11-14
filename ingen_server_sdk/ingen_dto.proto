@@ -38,6 +38,7 @@ message VmConfig {
 
     // Network configs
     repeated VmNicConfig nics = 100;
+    string netns = 101;
 
     // Storage configs
     string vm_data_folder = 200;
