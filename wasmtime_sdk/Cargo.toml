@@ -9,4 +9,4 @@ wit-bindgen-wasmtime = { git = "https://github.com/r12f/wit-bindgen", rev = "1e2
 wit-error-rs = { git = "https://github.com/danbugs/wit-error-rs", rev = "05362f1a4a3a9dc6a1de39195e06d2d5d6491a5e" }
 wasmtime = { git = "https://github.com/futurewei-cloud/wasmtime", branch = "release-0.39.0" }
 wasmtime-wasi = { git = "https://github.com/futurewei-cloud/wasmtime", branch = "release-0.39.0", features = ["tokio"] }
-wasi-common = { git = "https://github.com/futurewei-cloud/wasmtime", branch = "release-0.39.0" }
+wasi-common = { git = "https://github.com/Daybreak2019/wasmtime", rev = "3ba222f44b493fc242ce2c5e0099340b54d34a13" }
