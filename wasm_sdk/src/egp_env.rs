@@ -52,8 +52,8 @@ impl EgpEnv {
     /// Parse current environment variables related to emulated guest process execution envirionment.
     pub fn parse() -> Self {
         let mut env = EgpEnv {
-            vm_data_folders: Self::parse_folders_to_vec ("EVM_DATA_FOLDER"),
-            process_data_folders: Self::parse_folders_to_vec ("EGP_DATA_FOLDER"),
+            vm_data_folders: Self::parse_folders_to_vec("EVM_DATA_FOLDER"),
+            process_data_folders: Self::parse_folders_to_vec("EGP_DATA_FOLDER"),
 
             region: std::env::var("EVM_LOC_REGION").unwrap_or_default(),
             dc: std::env::var("EVM_LOC_DC").unwrap_or_default(),
@@ -83,13 +83,8 @@ impl EgpEnv {
 
     fn parse_folders_to_vec (data_folders_env_name: &str) -> Vec<String> {
         let data_folders_env_value = std::env::var(data_folders_env_name).expect("Failed to get data folder");
-        let folders_vec = data_folders_env_value.split(',').collect::<Vec<&str>>();
-
-        let mut folders_vec_string = Vec::new ();
-        for folder in folders_vec {
-            folders_vec_string.push (folder.to_string ());
-        }
-        folders_vec_string
+        let folders = data_folders_env_value.split(',').collect::<Vec<&str>>();
+        folders.into_iter().map(|x| x.to_string()).rev().collect()
     }
 }
 
