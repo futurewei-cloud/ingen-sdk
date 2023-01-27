@@ -1,13 +1,13 @@
 /// Emulated Guest Process Environment
 #[derive(Debug)]
 pub struct EgpEnv {
-    /// Data folder for the entire VM. The files in this folder will be visible to all processes within the same VM.
+    /// Data folders for the entire VM. The files in this folder will be visible to all processes within the same VM.
     /// > NOTE: This field will never be empty.
-    pub vm_data_folder: String,
+    pub vm_data_folders: Vec<String>,
 
-    /// Data folder for this process. The files in this folder will be visible to this process only, unless explicitly set to VM folder by the host.
+    /// Data folders for this process. The files in this folder will be visible to this process only, unless explicitly set to VM folder by the host.
     /// > NOTE: This field will never be empty.
-    pub process_data_folder: String,
+    pub process_data_folders: Vec<String>,
 
     // Location metadata
     /// Region where the VM is running in.
@@ -52,8 +52,8 @@ impl EgpEnv {
     /// Parse current environment variables related to emulated guest process execution envirionment.
     pub fn parse() -> Self {
         let mut env = EgpEnv {
-            vm_data_folder: std::env::var("EVM_DATA_FOLDER").expect("Failed to get data folder"),
-            process_data_folder: std::env::var("EGP_DATA_FOLDER").expect("Failed to get emulated process data folder"),
+            vm_data_folders: Self::parse_folders_to_vec("EVM_DATA_FOLDER"),
+            process_data_folders: Self::parse_folders_to_vec("EGP_DATA_FOLDER"),
 
             region: std::env::var("EVM_LOC_REGION").unwrap_or_default(),
             dc: std::env::var("EVM_LOC_DC").unwrap_or_default(),
@@ -80,6 +80,12 @@ impl EgpEnv {
 
         env
     }
+
+    fn parse_folders_to_vec (data_folders_env_name: &str) -> Vec<String> {
+        let data_folders_env_value = std::env::var(data_folders_env_name).expect("Failed to get data folder");
+        let folders = data_folders_env_value.split(',').collect::<Vec<&str>>();
+        folders.into_iter().map(|x| x.to_string()).collect()
+    }
 }
 
 #[cfg(test)]
@@ -88,8 +94,8 @@ mod tests {
 
     #[test]
     fn egp_env_can_parse_valid_config() {
-        std::env::set_var("EVM_DATA_FOLDER", "/data");
-        std::env::set_var("EGP_DATA_FOLDER", "/process_data");
+        std::env::set_var("EVM_DATA_FOLDER", "/data,/data2");
+        std::env::set_var("EGP_DATA_FOLDER", "/process_data,/process_data2");
         std::env::set_var("EVM_LOC_REGION", "test-region");
         std::env::set_var("EVM_LOC_DC", "test-dc");
         std::env::set_var("EVM_LOC_CLUSTER", "test-cluster");
@@ -101,8 +107,8 @@ mod tests {
         std::env::set_var("EVM_PRIVATE_IPV6", "[0001::1]");
 
         let env = EgpEnv::parse();
-        assert_eq!(env.vm_data_folder, "/data");
-        assert_eq!(env.process_data_folder, "/process_data");
+        assert_eq!(env.vm_data_folders, vec!["/data".to_string(), "/data2".to_string()]);
+        assert_eq!(env.process_data_folders, vec!["/process_data".to_string(), "/process_data2".to_string()]);
         assert_eq!(env.region, "test-region");
         assert_eq!(env.dc, "test-dc");
         assert_eq!(env.cluster, "test-cluster");
@@ -130,8 +136,8 @@ mod tests {
         std::env::remove_var("EVM_OWNER");
 
         let env = EgpEnv::parse();
-        assert_eq!(env.vm_data_folder, "/data");
-        assert_eq!(env.process_data_folder, "/process_data");
+        assert_eq!(env.vm_data_folders, vec!["/data".to_string()]);
+        assert_eq!(env.process_data_folders, vec!["/process_data".to_string()]);
         assert_eq!(env.vm_name, "test-vm");
         assert_eq!(env.vm_role, "test-role");
         assert_eq!(env.primary_ip_v4, Some("10.0.0.1".to_string()));
@@ -153,8 +159,8 @@ mod tests {
         std::env::set_var("EVM_PRIVATE_IPV6", "");
 
         let env = EgpEnv::parse();
-        assert_eq!(env.vm_data_folder, "/data");
-        assert_eq!(env.process_data_folder, "/process_data");
+        assert_eq!(env.vm_data_folders, vec!["/data".to_string()]);
+        assert_eq!(env.process_data_folders, vec!["/process_data".to_string()]);
         assert_eq!(env.region, "");
         assert_eq!(env.dc, "");
         assert_eq!(env.cluster, "");
@@ -182,8 +188,8 @@ mod tests {
         std::env::remove_var("EVM_PRIVATE_IPV6");
 
         let env = EgpEnv::parse();
-        assert_eq!(env.vm_data_folder, "/data");
-        assert_eq!(env.process_data_folder, "/process_data");
+        assert_eq!(env.vm_data_folders, vec!["/data".to_string()]);
+        assert_eq!(env.process_data_folders, vec!["/process_data".to_string()]);
         assert_eq!(env.vm_name, "test-vm");
         assert_eq!(env.vm_role, "test-role");
 

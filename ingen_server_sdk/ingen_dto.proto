@@ -41,7 +41,19 @@ message VmConfig {
     string netns = 101;
 
     // Storage configs
-    string vm_data_folder = 200;
+    repeated VmDataFolder vm_data_folders = 200;
+}
+
+enum FolderPermit {
+     NONE  = 0;
+     READ  = 1;
+     WRITE = 2;
+ }
+
+message VmDataFolder {
+     string host_dir = 1;
+     string guest_dir = 2;
+     FolderPermit permission = 3;
 }
 
 message VmEnvironmentVariable {
@@ -58,8 +70,10 @@ message GuestProcessConfig {
     repeated string args = 10;
     repeated VmEnvironmentVariable env_vars = 11;
 
-    // stdio
-    string data_folder = 20;
+    // preopened folder
+    repeated VmDataFolder gp_data_folders = 20;
+
+     // stdio
     string stdin = 21;
     string stdout_file = 22;
     string stderr_file = 23;
