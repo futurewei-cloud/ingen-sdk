@@ -84,7 +84,7 @@ impl EgpEnv {
     fn parse_folders_to_vec (data_folders_env_name: &str) -> Vec<String> {
         let data_folders_env_value = std::env::var(data_folders_env_name).expect("Failed to get data folder");
         let folders = data_folders_env_value.split(',').collect::<Vec<&str>>();
-        folders.into_iter().map(|x| x.to_string()).rev().collect()
+        folders.into_iter().map(|x| x.to_string()).collect()
     }
 }
 
@@ -94,8 +94,8 @@ mod tests {
 
     #[test]
     fn egp_env_can_parse_valid_config() {
-        std::env::set_var("EVM_DATA_FOLDER", "/data");
-        std::env::set_var("EGP_DATA_FOLDER", "/process_data");
+        std::env::set_var("EVM_DATA_FOLDER", "/data,/data2");
+        std::env::set_var("EGP_DATA_FOLDER", "/process_data,/process_data2");
         std::env::set_var("EVM_LOC_REGION", "test-region");
         std::env::set_var("EVM_LOC_DC", "test-dc");
         std::env::set_var("EVM_LOC_CLUSTER", "test-cluster");
@@ -107,8 +107,8 @@ mod tests {
         std::env::set_var("EVM_PRIVATE_IPV6", "[0001::1]");
 
         let env = EgpEnv::parse();
-        assert_eq!(env.vm_data_folders, vec!["/data".to_string()]);
-        assert_eq!(env.process_data_folders, vec!["/process_data".to_string()]);
+        assert_eq!(env.vm_data_folders, vec!["/data".to_string(), "/data2".to_string()]);
+        assert_eq!(env.process_data_folders, vec!["/process_data".to_string(), "/process_data2".to_string()]);
         assert_eq!(env.region, "test-region");
         assert_eq!(env.dc, "test-dc");
         assert_eq!(env.cluster, "test-cluster");
