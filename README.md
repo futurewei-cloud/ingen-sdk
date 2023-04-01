@@ -1,3 +1,5 @@
+"This Project has been archived by the owner, who is no longer providing support.  The project remains available to authorized users on a "read only" basis."
+
 # Ingen SDK
 
 Ingen (/ingen/, 隐元) is a cloud VM emulator based on WASM. It provides the environment for emulate the lifecycle of the VM and VM agents (processes running inside of VMs), and uses WASM runtime to run the emulated or real workloads, as long as the workload can be compiled into a WASM-WASI program.
